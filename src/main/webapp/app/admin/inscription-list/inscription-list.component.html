@@ -1,0 +1,56 @@
+<jhi-alert-error></jhi-alert-error>
+<div class="container">
+  <div *ngIf="!saisonList">Aucune inscription</div>
+  <div *ngIf="saisonList">
+    <div class="col-3">
+      <select class="form-control" name="saisonList" [(ngModel)]="saisonSelected" (ngModelChange)="onSelectChange($event)">
+        <option *ngFor="let saison of saisonList" [value]="saison.annees">{{ saison.annees }} {{ saison.active ? '(active)' : '' }}</option>
+      </select>
+    </div>
+    <div *ngIf="showTable | async">
+      <ngx-datatable
+        class="bootstrap"
+        [columnMode]="ColumnMode.force"
+        [footerHeight]="50"
+        [rowHeight]="50"
+        [headerHeight]="50"
+        [rows]="inscriptions$ | async"
+        [scrollbarH]="true"
+        [messages]="{ emptyMessage: 'Aucune inscription pour cette saison' }"
+        [limit]="25"
+      >
+        <ngx-datatable-column name="Nom" prop="nom" [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.nom }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Prénom" prop="prenom" [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.prenom }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Date de naissance" prop="dateNaissance">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.dateNaissance }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Email" [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.email }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Téléphone" [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.telephone }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Inscription" [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <input type="checkbox" [checked]="row?.paye" (change)="onChangePaye(row.id)" />
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+    <button (click)="downloadExcel()">Export to Excel</button>
+  </div>
+</div>

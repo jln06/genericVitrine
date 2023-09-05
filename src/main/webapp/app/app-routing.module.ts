@@ -14,10 +14,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
       [
         {
           path: 'admin',
-          data: {
-            authorities: [Authority.ADMIN],
-          },
-          canActivate: [UserRouteAccessService],
+          // data: {
+          //   authorities: [Authority.ADMIN],
+          // },
+          // canActivate: [UserRouteAccessService],
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
         },
         {

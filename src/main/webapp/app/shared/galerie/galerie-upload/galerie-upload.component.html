@@ -1,0 +1,18 @@
+<div class="text-wrapper">
+  <div class="centered" style="cursor: pointer">
+    <i *ngIf="onlyIcon" class="fas fa-plus browse-button" (click)="selectFile.click()"></i>
+  </div>
+</div>
+
+<div class="input-group mb-3">
+  <input
+    id="photo"
+    type="file"
+    [style.display]="onlyIcon ? 'none' : 'block'"
+    class="form-control"
+    accept="image/jpeg, image/png, image/gif"
+    #selectFile
+    [multiple]="!singleMode"
+    (change)="processUploadFile($event)"
+  />
+</div>

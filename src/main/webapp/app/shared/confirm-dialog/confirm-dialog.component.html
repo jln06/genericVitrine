@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+</div>
+<div class="modal-body">
+  <div class="mb-3">
+    {{ confirmText }}
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" ngbAutofocus class="btn btn-primary" (click)="onSave()">Oui</button>
+  <button type="button" class="btn btn-outline-dark" (click)="onClose()">Non</button>
+</div>

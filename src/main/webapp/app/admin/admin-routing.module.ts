@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
-    /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
     RouterModule.forChild([
       {
         path: 'user-management',
@@ -32,6 +31,13 @@ import { RouterModule } from '@angular/router';
       {
         path: 'metrics',
         loadChildren: () => import('./metrics/metrics.module').then(m => m.MetricsModule),
+      },
+      {
+        path: 'inscription-list',
+        loadChildren: () => import('./inscription-list/inscription-list.module').then(m => m.InscriptionListModule),
+        data: {
+          pageTitle: 'userManagement.home.title',
+        },
       },
       /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
     ]),

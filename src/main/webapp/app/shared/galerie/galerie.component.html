@@ -1,0 +1,12 @@
+<section id="galerie">
+  <div class="container">
+    <p class="h2">Galerie photos</p>
+    <ngx-gallery #ngxgallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
+  </div>
+  <jhi-galerie-upload
+    [filesHandle]="filesH"
+    (fileHandleUploaded)="onFileUploaded($event)"
+    *ngIf="isEditMode$ | async"
+    [singleMode]="singleMode"
+  ></jhi-galerie-upload>
+</section>

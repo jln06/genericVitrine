@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import com.nourry.generic.vitrine.IntegrationTest;
 import com.nourry.generic.vitrine.config.Constants;
 import com.nourry.generic.vitrine.domain.User;
+import com.nourry.generic.vitrine.service.impl.MailService;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;

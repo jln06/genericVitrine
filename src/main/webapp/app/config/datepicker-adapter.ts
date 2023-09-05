@@ -6,15 +6,21 @@ import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import dayjs from 'dayjs/esm';
 
 @Injectable()
-export class NgbDateDayjsAdapter extends NgbDateAdapter<dayjs.Dayjs> {
-  fromModel(date: dayjs.Dayjs | null): NgbDateStruct | null {
-    if (date && dayjs.isDayjs(date) && date.isValid()) {
-      return { year: date.year(), month: date.month() + 1, day: date.date() };
+export class NgbDateDayjsAdapter extends NgbDateAdapter<string> {
+  readonly DELIMITER = '/';
+  fromModel(value: string | null): NgbDateStruct | null {
+    if (value) {
+      const date = value.split(this.DELIMITER);
+      return {
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10),
+      };
     }
     return null;
   }
 
-  toModel(date: NgbDateStruct | null): dayjs.Dayjs | null {
-    return date ? dayjs(`${date.year}-${date.month}-${date.day}`) : null;
+  toModel(date: NgbDateStruct | null): string | null {
+    return date ? `${date.day.toString().padStart(2, '0')}/${date.month.toString().padStart(2, '0')}/${date.year}` : null;
   }
 }

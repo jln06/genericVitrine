@@ -1,10 +1,8 @@
 package com.nourry.generic.vitrine.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import com.nourry.generic.vitrine.repository.search.UserSearchRepository;
-import com.nourry.generic.vitrine.service.UserService;
 import com.nourry.generic.vitrine.service.dto.UserDTO;
+import com.nourry.generic.vitrine.service.impl.UserService;
 import java.util.*;
 import java.util.Collections;
 import java.util.stream.Collectors;

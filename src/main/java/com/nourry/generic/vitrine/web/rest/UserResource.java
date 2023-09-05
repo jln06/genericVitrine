@@ -1,14 +1,13 @@
 package com.nourry.generic.vitrine.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import com.nourry.generic.vitrine.config.Constants;
 import com.nourry.generic.vitrine.domain.User;
 import com.nourry.generic.vitrine.repository.UserRepository;
 import com.nourry.generic.vitrine.security.AuthoritiesConstants;
-import com.nourry.generic.vitrine.service.MailService;
-import com.nourry.generic.vitrine.service.UserService;
+import com.nourry.generic.vitrine.service.IMailService;
 import com.nourry.generic.vitrine.service.dto.AdminUserDTO;
+import com.nourry.generic.vitrine.service.impl.MailService;
+import com.nourry.generic.vitrine.service.impl.UserService;
 import com.nourry.generic.vitrine.web.rest.errors.BadRequestAlertException;
 import com.nourry.generic.vitrine.web.rest.errors.EmailAlreadyUsedException;
 import com.nourry.generic.vitrine.web.rest.errors.LoginAlreadyUsedException;
@@ -16,8 +15,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import org.slf4j.Logger;
@@ -89,7 +86,7 @@ public class UserResource {
 
     private final UserRepository userRepository;
 
-    private final MailService mailService;
+    private final IMailService mailService;
 
     public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
         this.userService = userService;

@@ -7,11 +7,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.nourry.generic.vitrine.IntegrationTest;
-import com.nourry.generic.vitrine.config.Constants;
 import com.nourry.generic.vitrine.domain.User;
 import com.nourry.generic.vitrine.repository.UserRepository;
 import com.nourry.generic.vitrine.repository.search.UserSearchRepository;
-import com.nourry.generic.vitrine.service.dto.AdminUserDTO;
+import com.nourry.generic.vitrine.service.impl.UserService;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -25,8 +24,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.security.RandomUtil;
 

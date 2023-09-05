@@ -1,0 +1,2 @@
+<img *ngIf="banniere" [src]="banniere.url" alt="{{ banniere.file.name }}" class="mainImg" />
+<jhi-galerie-upload *ngIf="editMode$ | async" (fileHandleUploaded)="onFileUploaded($event)" [singleMode]="true"></jhi-galerie-upload>

@@ -9,6 +9,7 @@ import { shareReplay, tap, catchError } from 'rxjs/operators';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { ApplicationConfigService } from '../config/application-config.service';
 import { Account } from 'app/core/auth/account.model';
+import { EditModeService } from '../service/edit-mode.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -22,7 +23,8 @@ export class AccountService {
     private http: HttpClient,
     private stateStorageService: StateStorageService,
     private router: Router,
-    private applicationConfigService: ApplicationConfigService
+    private applicationConfigService: ApplicationConfigService,
+    private editModeService: EditModeService
   ) {}
 
   save(account: Account): Observable<{}> {
@@ -35,6 +37,9 @@ export class AccountService {
     if (!identity) {
       this.accountCache$ = null;
     }
+    let b = this.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_GESTIONNAIRE']);
+    console.log('Authoritie : ' + b);
+    this.editModeService.setUpdateMode(b);
   }
 
   hasAnyAuthority(authorities: string[] | string): boolean {

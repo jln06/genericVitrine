@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="fr">
+  <head>
+    <title th:text="#{email.contact.title}">Prise de contact</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}" />
+  </head>
+  <body>
+    <p th:text="#{email.contact.nom(${contactDto.nom})}">Nom</p>
+    <p th:text="#{email.contact.prenom(${contactDto.nom})}">Prénom</p>
+    <p th:text="#{email.contact.telephone(${contactDto.nom})}">Téléphone</p>
+    <p th:text="#{${contactDto.message}}">Message</p>
+  </body>
+</html>

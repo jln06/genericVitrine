@@ -1,0 +1,62 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <changeSet id="00000000000005" author="jnourry">
+        <createTable tableName="image_categorie">
+            <column name="code" type="VARCHAR(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="chemin" type="VARCHAR(200)"/>
+        </createTable>
+
+
+        <loadData
+            file="config/liquibase/data/image_categorie.csv"
+            separator=";"
+            tableName="image_categorie"
+            usePreparedStatements="true">
+        </loadData>
+
+    </changeSet>
+
+    <changeSet id="00000000000006" author="jnourry">
+        <createTable tableName="image">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nom" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(100)"/>
+            <column name="uri" type="varchar(200)"/>
+            <column name="description" type="varchar(200)"/>
+            <column name="prix" type="varchar(200)"/>
+            <column name="image_categorie_code" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="image_categorie_code"
+                                 baseTableName="image"
+                                 constraintName="fk_image_categorie_code"
+                                 referencedColumnNames="code"
+                                 referencedTableName="image_categorie"/>
+
+
+        <loadData
+            file="config/liquibase/data/image.csv"
+            separator=";"
+            tableName="image"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="code" type="string"/>
+        </loadData>
+    </changeSet>
+
+
+</databaseChangeLog>

@@ -1,0 +1,33 @@
+<div class="modal-header" xmlns="http://www.w3.org/1999/html">
+  <h4 class="modal-title" id="modal-basic-title">{{ editGoodiesMode ? 'Editer' : 'Ajout' }} goodies</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+</div>
+<div class="modal-body">
+  <div class="card" style="width: 18rem">
+    <div class="card-body">
+      <jhi-galerie-upload [onlyIcon]="false" (fileHandleUploaded)="onUpload($event)"></jhi-galerie-upload>
+      <form [formGroup]="goodieFormGroup" novalidate>
+        <input
+          class="card-title form-control"
+          type="text"
+          id="goodieTitle"
+          [class.is-invalid]="description.invalid && (description.touched || description.dirty)"
+          placeholder="Description"
+          formControlName="description"
+        />
+        <input
+          class="card-text form-control"
+          [class.is-invalid]="prix.invalid && (prix.touched || prix.dirty)"
+          type="text"
+          id="goodiePrix"
+          placeholder="Prix"
+          formControlName="prix"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="submit" ngbAutofocus class="btn btn-primary" (click)="onSave()">{{ editGoodiesMode ? 'Modifier' : 'Ajouter' }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="onClose()">Annuler</button>
+</div>

@@ -1,0 +1,103 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <changeSet id="00000000000003" author="jnourry">
+        <createSequence sequenceName="sequence_generator_saison" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="sequence_generator_inscription" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <!-- Création de la table 'inscription' pour l'entité Inscription -->
+    <changeSet id="00000000000004" author="jnourry">
+        <createTable tableName="saison">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="annees" type="VARCHAR(10)">
+                <constraints nullable="true" />
+            </column>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false" />
+            </column>
+            <!-- Ajoutez ici d'autres colonnes de votre table 'Inscription' si nécessaire -->
+        </createTable>
+
+        <createTable tableName="inscription">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nom" type="VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="prenom" type="VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="email" type="VARCHAR(254)">
+                <constraints nullable="false" />
+            </column>
+            <column name="telephone" type="VARCHAR(15)">
+                <constraints nullable="false" />
+            </column>
+            <column name="date_naissance" type="DATE">
+                <constraints nullable="false" />
+            </column>
+            <column name="paye" type="BOOLEAN"/>
+            <column name="saison_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+            <!-- Ajoutez ici d'autres colonnes de votre table 'Saison' si nécessaire -->
+        </createTable>
+
+
+        <addForeignKeyConstraint baseColumnNames="saison_id"
+                                 baseTableName="inscription"
+                                 constraintName="fk_saison_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="saison"/>
+
+
+    </changeSet>
+
+    <changeSet id="00000000000005" author="jnourry">
+        <createTable tableName="variable_component">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="libelle" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valeur" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+            <!-- Autres colonnes si nécessaire -->
+        </createTable>
+
+        <createIndex indexName="idx_variable_component_code" tableName="variable_component">
+            <column name="code"/>
+        </createIndex>
+
+        <loadData
+            file="config/liquibase/data/description.csv"
+            separator=";"
+            tableName="variable_component"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="${datetimeType}"/>
+
+    </changeSet>
+
+
+</databaseChangeLog>

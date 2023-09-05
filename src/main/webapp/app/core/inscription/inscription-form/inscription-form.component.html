@@ -1,0 +1,83 @@
+<form [formGroup]="formInscription" (ngSubmit)="onSubmit(formInscription.value)" class="row g-3" autocomplete="off">
+  <div class="col-md-6">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Votre nom"
+      aria-label="Votre nom"
+      id="nomInscription"
+      formControlName="nom"
+      [class.is-invalid]="nom.invalid && (nom.touched || nom.dirty)"
+    />
+    <div class="invalid-feedback" *ngIf="nom?.hasError">
+      <ng-container *ngIf="nom?.hasError('required')"> Saisir un nom</ng-container>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Votre prénom"
+      aria-label="Votre prénom"
+      id="prenomInscription"
+      formControlName="prenom"
+      [class.is-invalid]="prenom.invalid && (prenom.touched || prenom.dirty)"
+    />
+    <div class="invalid-feedback" *ngIf="prenom?.hasError">
+      <ng-container *ngIf="prenom?.hasError('required')">Saisir un prénom</ng-container>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <input
+      type="telephone"
+      class="form-control"
+      placeholder="Votre numéro de téléphone"
+      formControlName="telephone"
+      aria-label="Votre numéro de téléphone"
+      id="telephoneInscription"
+      [class.is-invalid]="telephone.invalid && (telephone.touched || telephone.dirty)"
+    />
+    <div class="invalid-feedback" *ngIf="telephone?.errors">
+      <ng-container *ngIf="telephone?.errors['required']"> Saisir une numéro de téléphone</ng-container>
+      <ng-container *ngIf="telephone?.errors['pattern']"> Le numéro de téléphone ne doit contenir que des chiffres</ng-container>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <input
+      type="email"
+      class="form-control"
+      placeholder="Votre adresse e-mail"
+      formControlName="email"
+      aria-label="Votre adresse e-mail"
+      id="emailInscription"
+      [class.is-invalid]="email.invalid && (email.touched || email.dirty)"
+    />
+    <div class="invalid-feedback" *ngIf="email?.errors">
+      <ng-container *ngIf="email?.errors['required']"> Saisir une adresse émail</ng-container>
+      <ng-container *ngIf="email?.errors['email']"> Votre adresse émail est au mauvais format</ng-container>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="input-group">
+      <input
+        class="form-control"
+        placeholder="Date de naissance"
+        name="dp"
+        formControlName="dateNaissance"
+        ngbDatepicker
+        [startDate]="getStartDate()"
+        [maxDate]="getStartDate()"
+        [class.is-invalid]="dateNaissance.invalid && (dateNaissance.touched || dateNaissance.dirty)"
+        #d="ngbDatepicker"
+      />
+      <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
+    </div>
+    <div class="invalid-feedback" *ngIf="dateNaissance?.hasError">
+      <ng-container *ngIf="dateNaissance?.hasError('required')">Saisir une date</ng-container>
+    </div>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+  </div>
+</form>

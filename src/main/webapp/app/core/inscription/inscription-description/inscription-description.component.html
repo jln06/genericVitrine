@@ -1,0 +1,6 @@
+<jhi-inscription-ecriture
+  *ngIf="editMode$ | async"
+  [inscriptionDescription]="inscriptionDescription"
+  (formChange)="onChangeInscription($event)"
+></jhi-inscription-ecriture>
+<jhi-inscription-lecture *ngIf="!(editMode$ | async)" [inscriptionDescription]="inscriptionDescription"></jhi-inscription-lecture>

@@ -1,0 +1,14 @@
+<div class="container" *ngIf="description">
+  <div class="row">
+    <div class="col-md-6 col-xs-12 left">
+      <h2 class="title">{{ description.titreGauche }}</h2>
+      <div [innerHTML]="description.paragrapheGauche | safeHtml"></div>
+    </div>
+    <div class="col-md-6 col-xs-12 right">
+      <p class="h2">{{ description.titreDroit }}</p>
+      <div [innerHTML]="description.paragrapheDroit | safeHtml"></div>
+    </div>
+  </div>
+
+  <img *ngIf="photo" [src]="photo?.url" [alt]="photo?.file.name" class="vignette" />
+</div>

@@ -2,6 +2,7 @@ package com.nourry.generic.vitrine;
 
 import com.nourry.generic.vitrine.config.ApplicationProperties;
 import com.nourry.generic.vitrine.config.CRLFLogConverter;
+import com.nourry.generic.vitrine.config.FileStorageProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -20,7 +21,7 @@ import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
+@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class, FileStorageProperties.class })
 public class GenericVitrineApp {
 
     private static final Logger log = LoggerFactory.getLogger(GenericVitrineApp.class);

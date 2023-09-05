@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
+import { FileDto } from '../../entities/model/fileDto.model';
+import { DomSanitizer } from '@angular/platform-browser';
+import { FileHandle } from '../../entities/model/file-handle.model';
 
 export type FileLoadErrorType = 'not.image' | 'could.not.extract';
 
@@ -17,6 +20,8 @@ export interface FileLoadError {
   providedIn: 'root',
 })
 export class DataUtils {
+  constructor(private sanitizer: DomSanitizer) {}
+
   /**
    * Method to find the byte size of the string provides
    */
@@ -105,6 +110,28 @@ export class DataUtils {
     fileReader.readAsDataURL(file);
   }
 
+  fileDtoToFileHandle(fileDto: FileDto) {
+    const blob = this.base64ToBlob(fileDto.imageByte, fileDto.type);
+    // Create a SafeUrl from the blob URL
+    const url = URL.createObjectURL(blob);
+    return {
+      id: fileDto.id,
+      file: new File([blob], fileDto.name, { type: fileDto.type }),
+      url: this.sanitizer.bypassSecurityTrustUrl(url),
+      urlUnsafe: url,
+      description: fileDto.description,
+      prix: fileDto.prix,
+    };
+  }
+
+  fileToFileHandle(file: File): FileHandle {
+    return {
+      file: file,
+      url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file)),
+      urlUnsafe: window.URL.createObjectURL(file),
+    };
+  }
+
   private endsWith(suffix: string, str: string): boolean {
     return str.includes(suffix, str.length - suffix.length);
   }
@@ -125,5 +152,14 @@ export class DataUtils {
 
   private formatAsBytes(size: number): string {
     return size.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' bytes'; // NOSONAR
+  }
+
+  private base64ToBlob(base64: string, contentType: string): Blob {
+    const binary = atob(base64);
+    const array = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      array[i] = binary.charCodeAt(i);
+    }
+    return new Blob([array], { type: contentType });
   }
 }

@@ -1,5 +1,6 @@
 package com.nourry.generic.vitrine.web.rest.errors;
 
+import com.nourry.generic.vitrine.service.exception.UsernameAlreadyUsedException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -117,7 +118,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleEmailAlreadyUsedException(
-        com.nourry.generic.vitrine.service.EmailAlreadyUsedException ex,
+        com.nourry.generic.vitrine.service.exception.EmailAlreadyUsedException ex,
         NativeWebRequest request
     ) {
         EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
@@ -129,10 +130,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleUsernameAlreadyUsedException(
-        com.nourry.generic.vitrine.service.UsernameAlreadyUsedException ex,
-        NativeWebRequest request
-    ) {
+    public ResponseEntity<Problem> handleUsernameAlreadyUsedException(UsernameAlreadyUsedException ex, NativeWebRequest request) {
         LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
         return create(
             problem,
@@ -143,7 +141,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(
-        com.nourry.generic.vitrine.service.InvalidPasswordException ex,
+        com.nourry.generic.vitrine.service.exception.InvalidPasswordException ex,
         NativeWebRequest request
     ) {
         return create(new InvalidPasswordException(), request);

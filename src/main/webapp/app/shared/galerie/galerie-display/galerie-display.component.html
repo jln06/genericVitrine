@@ -1,0 +1,28 @@
+<div *ngIf="_filesHandle">
+  <ngb-carousel class="myCarousel carousel-custom" #carousel [activeId]="activeSliderId" (slide)="updateActiveSlideId($event)">
+    <ng-template ngbSlide id="ngb-slide-{{ image?.id }}" *ngFor="let image of _filesHandle; let i = index">
+      <div class="wrapper">
+        <img [src]="image.url" class="d-block w-100" alt="{{ image.file.name }}" />
+      </div>
+      <div *ngIf="showCaption" class="carousel-caption">
+        <h3>No mouse navigation</h3>
+        <p>This carousel hides navigation arrows and indicators.</p>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+  <ul class="carousel-thumbnail" *ngIf="showThumbnail">
+    <li
+      class="carousel-thumbnail__item list-inline-item"
+      [ngClass]="{ 'active-thumbnail': thumbnailSameImage(image) }"
+      *ngFor="let image of _filesHandle"
+      (click)="cycleToSlide(image, carousel)"
+    >
+      <a class="selected">
+        <img class="carousel-thumbnail__img" [src]="image.url" alt="{{ image.file.name }}" />
+      </a>
+      <span *ngIf="editMode$ | async" class="delete-icon" (click)="deleteImage(image)">
+        <i class="fas fa-trash"></i>
+      </span>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,9 @@
+id;nom;type;uri;image_categorie_code;created_by;last_modified_by;description;prix
+1;Big_1.jpg;image/jpg;;GALERIE;systeme;systeme;;
+2;Big_2.jpg;image/jpg;;GALERIE;systeme;systeme;;
+3;Big_3.jpg;image/jpg;;GALERIE;systeme;systeme;;
+4;Big_4.jpg;image/jpg;;GALERIE;systeme;systeme;;
+5;Sally.png;image/x-png;;PRESENTATION;systeme;systeme;;
+6;slider.jpg;image/jpg;;BANNIERE;systeme;systeme;;
+7;prod_1.jpg;image/jpg;;GOODIES;systeme;systeme;T-shrit;10
+8;prod_2.jpg;image/jpg;;GOODIES;systeme;systeme;corde à sauter;15

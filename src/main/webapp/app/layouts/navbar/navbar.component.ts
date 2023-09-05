@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SessionStorageService } from 'ngx-webstorage';
@@ -10,6 +10,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
+import { EditModeService } from '../../core/service/edit-mode.service';
 
 @Component({
   selector: 'jhi-navbar',
@@ -18,7 +19,7 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 })
 export class NavbarComponent implements OnInit {
   inProduction?: boolean;
-  isNavbarCollapsed = true;
+  isNavbarCollapsed = false;
   languages = LANGUAGES;
   openAPIEnabled?: boolean;
   version = '';
@@ -31,7 +32,10 @@ export class NavbarComponent implements OnInit {
     private sessionStorageService: SessionStorageService,
     private accountService: AccountService,
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
+    private updateModeService: EditModeService,
+    private el: ElementRef,
+    private renderer: Renderer2
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -71,5 +75,21 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  scrollTo(idElement: string): void {
+    // @ts-ignore
+    document.getElementById(idElement).scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+  }
+
+  activeUpdateMode(): void {
+    let updateValue = this.updateModeService.switchUpdateMode();
+    let statut: string = updateValue ? 'rentrez' : 'sortez';
+    // window.alert(`Vous ${statut} dans le mode édition`);
+    window.scrollTo(0, 0);
+  }
+
+  disableUpdateMode(): void {
+    this.updateModeService.setUpdateMode(false);
   }
 }

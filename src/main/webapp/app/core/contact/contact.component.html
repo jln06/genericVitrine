@@ -1,0 +1,94 @@
+<section id="contact">
+  <div class="container" id="contactZone">
+    <p class="h2">Nous contacter</p>
+    <div class="row">
+      <div class="col-md-6 col-xs-12">
+        <form [formGroup]="formData" (ngSubmit)="onSubmit(formData.value)" class="row g-3">
+          <div class="form-group" class="col-md-6">
+            <input
+              id="email"
+              type="text"
+              class="form-control"
+              name="email"
+              aria-describedby="emailHelp"
+              placeholder="Votre adresse e-mail"
+              aria-label="Votre adresse e-mail"
+              formControlName="email"
+              [class.is-invalid]="email.invalid && (email.touched || email.dirty)"
+            />
+            <div class="invalid-feedback" *ngIf="email?.errors">
+              <ng-container *ngIf="email?.errors['required']"> L'émail est obligatoire</ng-container>
+              <ng-container *ngIf="email?.errors['email']"> Le format de l'email est incorrect</ng-container>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <input
+              id="telephone"
+              type="text"
+              class="form-control"
+              name="telephone"
+              aria-describedby="telephoneHelp"
+              placeholder="Votre numéro de téléphone"
+              formControlName="telephone"
+              [class.is-invalid]="telephone.invalid && (telephone.touched || telephone.dirty)"
+            />
+            <div class="invalid-feedback" *ngIf="telephone?.errors">
+              <ng-container *ngIf="telephone?.errors['required']"> Le numéro de téléphone est obligatoire</ng-container>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <input
+              id="nom"
+              type="text"
+              class="form-control"
+              name="nom"
+              aria-describedby="nomHelp"
+              placeholder="Votre nom"
+              formControlName="nom"
+              [class.is-invalid]="nom.invalid && (nom.touched || nom.dirty)"
+            />
+            <div class="invalid-feedback" *ngIf="nom?.hasError">
+              <ng-container *ngIf="nom?.hasError('required')"> Le nom est obligatoire</ng-container>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <input
+              id="prenom"
+              type="text"
+              class="form-control"
+              name="prenom"
+              aria-describedby="prenomHelp"
+              placeholder="Votre prenom"
+              formControlName="prenom"
+              [class.is-invalid]="prenom.invalid && (prenom.touched || prenom.dirty)"
+            />
+            <div class="invalid-feedback" *ngIf="prenom?.errors">
+              <ng-container *ngIf="prenom?.errors['required']"> Le prénom est obligatoire</ng-container>
+            </div>
+          </div>
+
+          <div class="form-group col-12">
+            <textarea class="form-control" id="message" formControlName="message" placeholder="Votre message" name="message"></textarea>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6 col-xs-12">
+        <ul>
+          <li><i class="fas fa-at"></i>Par e-mail: <a href="mailto:frenchrivieraskipping@gmail.com">frenchrivieraskipping@gmail.com</a></li>
+          <li><i class="fas fa-mobile"></i>Par téléphone: <a href="tel:0670224092">06.70.22.40.92</a></li>
+        </ul>
+        <div class="social">
+          <p class="h5">Nous suivre:</p>
+          <ul>
+            <li><i class="fab fa-facebook"></i><a href="https://www.facebook.com/profile.php?id=100085045542521">Sur Facebook</a></li>
+            <li><i class="fab fa-instagram"></i><a href="https://www.instagram.com/frenchrivieraskipping/">Sur Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

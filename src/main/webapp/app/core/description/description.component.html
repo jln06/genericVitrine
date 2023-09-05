@@ -1,0 +1,10 @@
+<section id="presentation">
+  <jhi-description-lecture [description]="description" *ngIf="!(isEditMode | async)" [photo]="file"></jhi-description-lecture>
+  <jhi-description-ecriture
+    [description]="description"
+    *ngIf="isEditMode | async"
+    (formChange)="onChangeDesciption($event)"
+    (photoChange)="onChangePhoto($event)"
+    [file]="file"
+  ></jhi-description-ecriture>
+</section>

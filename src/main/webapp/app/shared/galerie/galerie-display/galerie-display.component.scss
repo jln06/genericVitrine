@@ -1,0 +1,29 @@
+.carousel-thumbnail {
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-thumbnail__item {
+  cursor: pointer;
+  opacity: 0.3;
+}
+
+.carousel-thumbnail__img {
+  width: 80px;
+  height: 60px;
+}
+
+.active-thumbnail {
+  opacity: 1; /* Ajustez la valeur d'opacité selon vos besoins */
+  /* Autres styles CSS si nécessaire */
+}
+
+.carousel-inner > .carousel-item {
+  -webkit-transition: 0s !important;
+  -o-transition: 0s !important;
+  transition: 0s !important;
+}

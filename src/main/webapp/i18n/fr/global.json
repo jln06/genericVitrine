@@ -138,6 +138,7 @@
     "idnull": "Identifiant invalide",
     "idinvalid": "Invalid Id",
     "idnotfound": "ID cannot be found",
+    "inscriptionEmpty": "Aucune inscription pour cette saison",
     "file": {
       "could.not.extract": "Impossible d'extraire le fichier",
       "not.image": "Le fichier doit être une image et non du type \"{{ fileType }}\""

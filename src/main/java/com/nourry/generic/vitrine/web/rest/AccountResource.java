@@ -3,10 +3,11 @@ package com.nourry.generic.vitrine.web.rest;
 import com.nourry.generic.vitrine.domain.User;
 import com.nourry.generic.vitrine.repository.UserRepository;
 import com.nourry.generic.vitrine.security.SecurityUtils;
-import com.nourry.generic.vitrine.service.MailService;
-import com.nourry.generic.vitrine.service.UserService;
+import com.nourry.generic.vitrine.service.IMailService;
 import com.nourry.generic.vitrine.service.dto.AdminUserDTO;
 import com.nourry.generic.vitrine.service.dto.PasswordChangeDTO;
+import com.nourry.generic.vitrine.service.impl.MailService;
+import com.nourry.generic.vitrine.service.impl.UserService;
 import com.nourry.generic.vitrine.web.rest.errors.*;
 import com.nourry.generic.vitrine.web.rest.vm.KeyAndPasswordVM;
 import com.nourry.generic.vitrine.web.rest.vm.ManagedUserVM;
@@ -39,7 +40,7 @@ public class AccountResource {
 
     private final UserService userService;
 
-    private final MailService mailService;
+    private final IMailService mailService;
 
     public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
         this.userRepository = userRepository;

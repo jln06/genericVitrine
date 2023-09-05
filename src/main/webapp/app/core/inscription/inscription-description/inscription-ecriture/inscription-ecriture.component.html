@@ -1,0 +1,10 @@
+<form [formGroup]="inscriptionDescriptionForm" novalidate>
+  <div class="form-group">
+    <input class="form-control" placeholder="Titre" formControlName="titre" type="text" name="titreInscription" id="titreInscription" />
+  </div>
+  <div class="form-group">
+    <ckeditor id="descriptionInscription" [editor]="Editor" formControlName="description" (ready)="onReady($event)"></ckeditor>
+  </div>
+  <button type="submit" (click)="open()" class="btn btn-primary">Valider</button>
+  <button type="button" (click)="reset()" class="btn btn-primary">Annuler</button>
+</form>

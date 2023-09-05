@@ -13,6 +13,16 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { FilterComponent } from './filter/filter.component';
+import { SafeUrlPipe } from './pipe/safe-url.pipe';
+import { SafeHtmlPipe } from './pipe/safe-html.pipe';
+import { DragDirective } from './directive/drag.directive';
+import { SplideDirective } from './directive/splide.directive';
+import { GalerieComponent } from './galerie/galerie.component';
+import { GalerieDisplayComponent } from './galerie/galerie-display/galerie-display.component';
+import { GalerieUploadComponent } from './galerie/galerie-upload/galerie-upload.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { closeMenuDirective } from './directive/close-menu.directive';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -29,6 +39,15 @@ import { FilterComponent } from './filter/filter.component';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
+    SafeUrlPipe,
+    SafeHtmlPipe,
+    closeMenuDirective,
+    DragDirective,
+    SplideDirective,
+    GalerieComponent,
+    GalerieDisplayComponent,
+    GalerieUploadComponent,
+    ConfirmDialogComponent,
   ],
   exports: [
     SharedLibsModule,
@@ -44,6 +63,13 @@ import { FilterComponent } from './filter/filter.component';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
+    DragDirective,
+    SplideDirective,
+    GalerieComponent,
+    GalerieUploadComponent,
+    SafeHtmlPipe,
+    closeMenuDirective,
+    GalerieDisplayComponent,
   ],
 })
 export class SharedModule {}

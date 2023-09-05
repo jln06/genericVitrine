@@ -1,0 +1,28 @@
+<div class="container">
+  <form [formGroup]="formDescription" novalidate>
+    <div class="row">
+      <div class="col-md-6 col-xs-12 left">
+        <div class="form-group">
+          <input class="form-control" placeholder="Titre" formControlName="titreGauche" type="text" name="titreGauche" id="titreGauche" />
+        </div>
+        <div class="form-group">
+          <ckeditor id="paragrapheGauche" [editor]="Editor" formControlName="paragrapheGauche" (ready)="onReady($event)"></ckeditor>
+        </div>
+      </div>
+      <div class="col-md-6 col-xs-12 right">
+        <div class="form-group">
+          <input class="form-control" placeholder="Titre" formControlName="titreDroit" type="text" name="titreDroit" id="titreDroit" />
+        </div>
+        <div class="form-group">
+          <ckeditor id="paragrapheDroit" [editor]="Editor2" formControlName="paragrapheDroit" (ready)="onReady($event)"></ckeditor>
+        </div>
+      </div>
+    </div>
+    <div>
+      <img jhiDrag (files)="fileDropped($event)" [src]="file?.url" [alt]="file?.file?.name" class="vignette" />
+      <jhi-galerie-upload class="add-vignette" (fileHandleUploaded)="onFileUploaded($event)" [singleMode]="true"></jhi-galerie-upload>
+    </div>
+    <button type="submit" (click)="open()" class="btn btn-primary">Valider</button>
+    <button type="button" (click)="reset()" class="btn btn-primary">Annuler</button>
+  </form>
+</div>
