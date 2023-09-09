@@ -1,14 +1,11 @@
-<div class="text-wrapper">
-  <div class="centered" style="cursor: pointer">
-    <i *ngIf="onlyIcon" class="fas fa-plus browse-button" (click)="selectFile.click()"></i>
-  </div>
-</div>
+<button *ngIf="!onlyIcon" class="btn btn-primary browse-button" (click)="selectFile.click()">Ajouter une image</button>
+<i *ngIf="onlyIcon" class="fas fa-plus browse-button" (click)="selectFile.click()"></i>
 
 <div class="input-group mb-3">
   <input
     id="photo"
     type="file"
-    [style.display]="onlyIcon ? 'none' : 'block'"
+    [style.display]="'none'"
     class="form-control"
     accept="image/jpeg, image/png, image/gif"
     #selectFile

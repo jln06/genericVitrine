@@ -75,6 +75,12 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+    const bodyElement = this.el.nativeElement.parentElement.parentElement;
+    if (!this.isNavbarCollapsed) {
+      this.renderer.removeClass(bodyElement, 'navOpened');
+    } else {
+      this.renderer.addClass(bodyElement, 'navOpened');
+    }
   }
 
   scrollTo(idElement: string): void {

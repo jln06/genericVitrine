@@ -4,8 +4,8 @@
     <splide [options]="option">
       <splide-slide *ngFor="let image of goodies">
         <img [src]="image.url" alt="" />
-        <p *ngIf="image?.description" class="nom">{{ image.description }}</p>
-        <p *ngIf="image?.prix" class="prix">{{ image.prix }} €</p>
+        <p *ngIf="image?.description" class="nom text-start">{{ image.description }}</p>
+        <p *ngIf="image?.prix" class="prix text-end">{{ image.prix }} €</p>
         <span (click)="editImage(image)" *ngIf="isEditMode$ | async" class="icon-goodie icon-update-goodies"
           ><fa-icon icon="pencil-alt"></fa-icon
         ></span>
@@ -14,7 +14,7 @@
         ></span>
       </splide-slide>
       <splide-slide *ngIf="isEditMode$ | async">
-        <button type="button" (click)="openModalGoodie()" class="btn"><i class="fas fa-plus browse-button"></i></button>
+        <i class="fas fa-plus browse-button" (click)="openModalGoodie()"></i>
       </splide-slide>
     </splide>
   </div>

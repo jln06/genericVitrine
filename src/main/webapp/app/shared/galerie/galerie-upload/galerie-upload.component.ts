@@ -1,11 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { EditModeService } from '../../../core/service/edit-mode.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FileHandle } from '../../../entities/model/file-handle.model';
-import { DomSanitizer } from '@angular/platform-browser';
-import { DataUtils } from '../../../core/util/data-util.service';
-import { isValid } from 'ngx-bootstrap/chronos/create/valid';
+import { EditModeService } from '../../../core/service/edit-mode.service';
 import { AlertService } from '../../../core/util/alert.service';
+import { DataUtils } from '../../../core/util/data-util.service';
+import { FileHandle } from '../../../entities/model/file-handle.model';
 
 @Component({
   selector: 'jhi-galerie-upload',

@@ -71,7 +71,7 @@
         [class.is-invalid]="dateNaissance.invalid && (dateNaissance.touched || dateNaissance.dirty)"
         #d="ngbDatepicker"
       />
-      <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
+      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fas fa-calendar"></i></button>
     </div>
     <div class="invalid-feedback" *ngIf="dateNaissance?.hasError">
       <ng-container *ngIf="dateNaissance?.hasError('required')">Saisir une date</ng-container>
