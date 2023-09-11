@@ -3,7 +3,6 @@ package com.nourry.generic.vitrine.service.impl;
 import com.nourry.generic.vitrine.config.Constants;
 import com.nourry.generic.vitrine.domain.Authority;
 import com.nourry.generic.vitrine.domain.User;
-import com.nourry.generic.vitrine.enums.VariableComponentEnum;
 import com.nourry.generic.vitrine.repository.AuthorityRepository;
 import com.nourry.generic.vitrine.repository.UserRepository;
 import com.nourry.generic.vitrine.repository.search.UserSearchRepository;

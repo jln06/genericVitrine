@@ -15,28 +15,11 @@ export class DescriptionLectureComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    // this.readPhoto();
-  }
+  ngOnInit(): void {}
 
   readPhoto(): void {
     if (this.description.photo) {
       this.photo = this.description.photo;
     }
-  }
-
-  //pour la DB
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngChanges de lecture');
-    // this.readPhoto();
-    //   if (this.description.photo) {
-    //     const reader = new FileReader();
-    //     reader.onload = (e: any) => {
-    //       console.log(e.target.result);
-    //       this.preview = e.target.result;
-    //     };
-    // //changer type en File au lieu de FileHandler
-    //     reader.readAsDataURL(this.description.photo);
-    //   }
   }
 }

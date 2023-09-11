@@ -60,13 +60,16 @@ export class InscriptionFormComponent implements OnInit {
     }
     let value1 = value as Inscription;
     this.inscriptionService.inscrire(value1).subscribe(
-      () =>
+      () => {
         this.alertService.addAlert({
           type: 'success',
           timeout: 10000,
           message: 'Pré-inscription envoyée',
           position: 'top center',
-        }),
+        });
+        this.formInscription.reset();
+        scrollTo(0, 0);
+      },
       () =>
         this.alertService.addAlert({
           type: 'danger',

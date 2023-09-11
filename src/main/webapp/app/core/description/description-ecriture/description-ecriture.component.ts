@@ -24,7 +24,6 @@ export class DescriptionEcritureComponent implements OnInit, AfterViewInit, OnCh
   @Input()
   set description(description: Description) {
     if (description) {
-      console.log("j'init les description dans le set input");
       this._description = { ...description };
       this.formDescription.patchValue(this._description);
     }
@@ -117,7 +116,6 @@ export class DescriptionEcritureComponent implements OnInit, AfterViewInit, OnCh
   }
 
   ngAfterViewInit(): void {
-    console.log('je patch la descirption');
     this.patchValues();
   }
 
@@ -125,14 +123,12 @@ export class DescriptionEcritureComponent implements OnInit, AfterViewInit, OnCh
     // eslint-disable-next-line no-console
     this.formChange.emit(this.formDescription.value);
     if (this.photoIsChanged) {
-      console.log('La photo a été changée');
       this.photoChange.emit(this.file);
     }
     this.photoIsChanged = false;
   }
 
   onFileUploaded($event: FileHandle[]): void {
-    console.log('photo uploadée');
     this.file = $event[0];
     this.photoIsChanged = true;
   }
@@ -149,9 +145,7 @@ export class DescriptionEcritureComponent implements OnInit, AfterViewInit, OnCh
         result => {
           this.onSubmit();
         },
-        reason => {
-          console.log('fermé' + reason);
-        }
+        reason => {}
       )
       .finally(() => scrollTo('presentation'));
   }

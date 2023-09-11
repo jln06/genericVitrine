@@ -32,7 +32,6 @@ export class GalerieDisplayComponent implements OnInit {
   @Input()
   set fileHandle(fileHandle: FileHandle[]) {
     if (fileHandle && fileHandle.length > 0) {
-      console.log("j'init les fileHandle dans input");
       this._filesHandle = fileHandle;
       this.activeSliderId = this.PRE_ID_ITEM + this._filesHandle[0].id;
     }
@@ -50,14 +49,11 @@ export class GalerieDisplayComponent implements OnInit {
 
   cycleToSlide(photo: any, carousel: NgbCarousel) {
     let slideId = photo.id;
-    console.log('photo id ' + slideId);
     this.activeSliderId = this.PRE_ID_ITEM + slideId;
-    console.log('je cycle sur ' + this.activeSliderId);
     carousel.select(this.PRE_ID_ITEM + slideId);
   }
 
   updateActiveSlideId($event: NgbSlideEvent) {
-    console.log("j'update slide" + $event.current);
     let current = $event.current;
     this.activeSliderId = $event.current;
   }
@@ -83,9 +79,5 @@ export class GalerieDisplayComponent implements OnInit {
         this.onDeleteFile.emit(image);
       })
       .finally(() => scrollTo('galerie'));
-  }
-
-  addImage() {
-    console.log("j'ajoute une image");
   }
 }

@@ -29,6 +29,7 @@ export class GoodiesComponent implements OnInit {
     pagination: false,
     rewind: false,
     autoplay: false,
+    drag: true,
     gap: 15,
     breakpoints: {
       768: {
@@ -89,9 +90,7 @@ export class GoodiesComponent implements OnInit {
           });
         }
       },
-      reason => {
-        console.log(reason);
-      }
+      reason => {}
     );
   }
 
@@ -111,12 +110,9 @@ export class GoodiesComponent implements OnInit {
         const ids: number[] = [image.id];
         this.fileService.deletePhoto(ids).subscribe(() => {
           this.recupererGoodies();
-          console.log('photo supprimée avec succes');
         });
       },
-      reason => {
-        console.log('fermé' + reason);
-      }
+      reason => {}
     );
   }
 }

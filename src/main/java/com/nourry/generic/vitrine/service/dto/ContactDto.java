@@ -19,7 +19,7 @@ public class ContactDto {
     private String email;
 
     @Pattern(regexp = "^[0-9]{10,14}$", message = "Le numéro de téléphone doit contenir de 10 à 14 chiffres.")
-    private String numeroTelephone;
+    private String telephone;
 
     @Size(min = 1, max = 800)
     private String message;

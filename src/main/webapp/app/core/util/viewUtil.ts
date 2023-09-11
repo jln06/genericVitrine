@@ -8,5 +8,5 @@ export function isPresent<T>(t: T | undefined | null | void): t is T {
 
 export function scrollTo(idElement: string): void {
   // @ts-ignore
-  document.getElementById(idElement).scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+  if (idElement) document.getElementById(idElement).scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
 }

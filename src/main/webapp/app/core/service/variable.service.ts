@@ -19,7 +19,6 @@ export class VariableService {
   }
 
   updateVariable(variable: Variable): Observable<{}> {
-    console.log('update de variable service pour ' + variable.code + ' avec valeur ' + variable.valeur);
     const headers = new HttpHeaders({ 'Cache-Control': 'no-cache' });
     const url = `${this.resourceUrl}`;
     return this.http.post<Variable>(url, variable, { headers: headers });

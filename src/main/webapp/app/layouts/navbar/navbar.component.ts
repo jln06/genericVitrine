@@ -11,6 +11,7 @@ import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import { EditModeService } from '../../core/service/edit-mode.service';
+import { scrollTo } from '../../core/util/viewUtil';
 
 @Component({
   selector: 'jhi-navbar',
@@ -75,24 +76,22 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+    this.removeOpenedNavClassBody();
+  }
+
+  scrollTo(idElement?: string): void {
+    this.isNavbarCollapsed = false;
+    this.removeOpenedNavClassBody();
+    scrollTo(idElement);
+  }
+
+  removeOpenedNavClassBody() {
     const bodyElement = this.el.nativeElement.parentElement.parentElement;
     if (!this.isNavbarCollapsed) {
       this.renderer.removeClass(bodyElement, 'navOpened');
     } else {
       this.renderer.addClass(bodyElement, 'navOpened');
     }
-  }
-
-  scrollTo(idElement: string): void {
-    // @ts-ignore
-    document.getElementById(idElement).scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-  }
-
-  activeUpdateMode(): void {
-    let updateValue = this.updateModeService.switchUpdateMode();
-    let statut: string = updateValue ? 'rentrez' : 'sortez';
-    // window.alert(`Vous ${statut} dans le mode édition`);
-    window.scrollTo(0, 0);
   }
 
   disableUpdateMode(): void {

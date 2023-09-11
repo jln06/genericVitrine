@@ -46,28 +46,6 @@ export class GalerieComponent implements OnInit, AfterViewInit {
     this.isEditMode$.subscribe(value => {
       this.ngxgallery.thumbnails.actions = this.determineThumbNailAction(value);
     });
-    // const ngxGalleryThumbnails = this.el.nativeElement.querySelector('.ngx-gallery-thumbnails');
-    //
-    // const divElement = this.renderer.createElement('div');
-    // this.renderer.setStyle(divElement, 'position', 'absolute');
-    // this.renderer.setStyle(divElement, 'top', '60px');
-    // this.renderer.setStyle(divElement, 'right', '-20px');
-    // this.renderer.addClass(divElement,"ngx-gallery-thumbnail")
-    //
-    // const btnElement = this.renderer.createElement('button');
-    // this.renderer.listen(btnElement, 'click', () => {
-    //   // Code à exécuter lorsque l'élément div est cliqué
-    //   console.log('Div cliquée !');
-    // });
-    //
-    // const iconElement = this.renderer.createElement('i');
-    // this.renderer.addClass(iconElement, 'fas');
-    // this.renderer.addClass(iconElement, 'fa-plus');
-    // this.renderer.addClass(btnElement, "btn");
-    //
-    // this.renderer.appendChild(btnElement, iconElement);
-    // this.renderer.appendChild(divElement, btnElement);
-    // this.renderer.appendChild(ngxGalleryThumbnails, divElement);
   }
 
   private initOptionGallery() {
@@ -93,7 +71,7 @@ export class GalerieComponent implements OnInit, AfterViewInit {
         height: '800px',
         thumbnailsColumns: 8,
         imageDescription: true,
-        imageAnimation: NgxGalleryAnimation.Zoom,
+        imageAnimation: NgxGalleryAnimation.Slide,
         thumbnailsSwipe: true,
         thumbnailsPercent: 20,
         thumbnailsMoveSize: 1,
@@ -123,7 +101,6 @@ export class GalerieComponent implements OnInit, AfterViewInit {
   }
 
   onFileUploaded($event: FileHandle[]) {
-    console.log('upload des photos');
     const observables = $event.filter(file => file.id == null).map(file => this.fileService.addImage(file, 'GALERIE'));
     forkJoin(observables).subscribe(() => {
       // Toutes les observables sont terminées ici
@@ -157,11 +134,9 @@ export class GalerieComponent implements OnInit, AfterViewInit {
     ngbModalRef.result
       .then(result => {
         const ids: number[] = [this.galleryImages[index]?.idPhoto];
-        console.log(ids);
         this.fileService.deletePhoto(ids).subscribe(() => {
           this.recupererGallerie2();
           this.ngxgallery.show(index - 1);
-          console.log('photo supprimée avec succes');
         });
       })
       .finally(() => scrollTo('galerie'));

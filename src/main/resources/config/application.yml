@@ -138,6 +138,7 @@ spring:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
   messages:
     basename: i18n/messages
+    encoding: UTF-8
   main:
     allow-bean-definition-overriding: true
   mvc:
@@ -192,7 +193,8 @@ jhipster:
   #   allow-credentials: true
   #   max-age: 1800
   mail:
-    from: genericVitrine@localhost
+    from: noreply@frenchRivieraSkipping.fr
+
   api-docs:
     default-include-pattern: ${server.servlet.context-path:}/api/**
     management-include-pattern: ${server.servlet.context-path:}/management/**

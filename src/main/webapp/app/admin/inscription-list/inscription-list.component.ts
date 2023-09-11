@@ -31,7 +31,6 @@ export class InscriptionListComponent implements OnInit, AfterViewInit, OnDestro
     this.inscriptions$ = this.inscriptionService.inscriptionsSuject$;
     this.inscriptionService.getSaisons().subscribe(data => {
       if (data && data.length > 0) {
-        console.log('il y des saisons');
         this.saisonList = data;
         this.saisonSelected = data.filter(s => s.active).map(s => s.annees)[0];
         this.inscriptionService.searchInscriptions(this.saisonSelected);
@@ -58,7 +57,6 @@ export class InscriptionListComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   onChangePaye(number: number) {
-    console.log('je change la valeur paye de ' + number);
     this.inscriptionService.payeInscription(number).subscribe(() => this.inscriptionService.searchInscriptions(this.saisonSelected));
   }
 

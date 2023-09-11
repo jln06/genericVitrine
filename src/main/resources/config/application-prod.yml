@@ -33,9 +33,9 @@ spring:
       enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/genericVitrine
-    username: genericVitrine
-    password:
+    url: jdbc:postgresql://localhost:5432/frenchrv
+    username: frv_usr
+    password: Elouise@1929
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -126,3 +126,6 @@ jhipster:
 # ===================================================================
 
 # application:
+
+file:
+  upload-dir: resources

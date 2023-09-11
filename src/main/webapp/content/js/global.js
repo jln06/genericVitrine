@@ -35,7 +35,6 @@ function slider_init(splideElem) {
     (slide_rewind =
       typeof splide_slider_selector.attr('data-slide_rewind') != 'undefined' ? splide_slider_selector.attr('data-slide_rewind') : false);
 
-  console.log('je suis executé');
   splide_slider_selector.each(function () {
     var splide = new Splide(this, {
       lazyLoad: 'nearby',

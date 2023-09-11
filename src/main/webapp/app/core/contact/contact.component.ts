@@ -22,7 +22,7 @@ export class ContactComponent implements OnInit {
     this.formData = this.formbuilder.group({
       nom: ['', [Validators.required]],
       prenom: ['', [Validators.required]],
-      telephone: ['', [Validators.required]],
+      telephone: ['', [Validators.required, Validators.pattern('^[0-9]{10,14}$')]],
       email: ['', [Validators.required, Validators.email]],
       message: ['', [Validators.required]],
     });
@@ -39,6 +39,8 @@ export class ContactComponent implements OnInit {
           type: 'success',
           message: 'Message envoyé',
         });
+        // this.formData.reset();
+        scrollTo(0, 0);
       },
       () =>
         this.alertService.addAlert({

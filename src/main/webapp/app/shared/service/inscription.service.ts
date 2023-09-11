@@ -32,7 +32,6 @@ export class InscriptionService {
 
   searchInscriptions(saison: string): void {
     this.getInscription(saison).subscribe(data => {
-      console.log(data);
       this.inscriptionsSubject.next(data);
     });
   }

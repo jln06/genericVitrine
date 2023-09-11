@@ -23,7 +23,6 @@ export class InscriptionDescriptionComponent implements OnInit {
   }
 
   onChangeInscription($event: any) {
-    console.log('Mise à jour de inscription');
     this.updateVariableInscription($event);
   }
 
@@ -39,7 +38,6 @@ export class InscriptionDescriptionComponent implements OnInit {
       }),
     ]).subscribe(() => {
       this.initVariableInscription();
-      console.log('Upload des variables => ok');
     });
   }
 

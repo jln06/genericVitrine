@@ -40,7 +40,6 @@ export class DescriptionComponent implements OnInit {
   }
 
   initVariableDescription(): void {
-    console.log("j'inite les variables de description");
     forkJoin([
       this.variableService.getVariable(VariableComponentEnum.TITRE_GAUCHE),
       this.variableService.getVariable(VariableComponentEnum.TITRE_DROIT),
@@ -59,7 +58,6 @@ export class DescriptionComponent implements OnInit {
   intPhotoDescription() {
     this.fileService.recupererPhotoDescription().subscribe(res => {
       if (res && res.length > 0) {
-        console.log('photo trouvée');
         const fileDto = res[0];
         this.file = this.dataUtil.fileDtoToFileHandle(fileDto);
       }
@@ -67,7 +65,6 @@ export class DescriptionComponent implements OnInit {
   }
 
   onChangeDesciption(data: Description): void {
-    console.log('Mise à jour de la description');
     this.updateVariablePresentation(data);
   }
 
@@ -91,13 +88,11 @@ export class DescriptionComponent implements OnInit {
       }),
     ]).subscribe(() => {
       this.initVariableDescription();
-      console.log('Upload des variables => ok');
     });
   }
 
   private updatePhoto() {
     if (this.fileUploaded) {
-      console.log('je vais updater la photo');
       this.fileService.addImage(this.fileUploaded, 'PRESENTATION').subscribe(file => {
         this.file = this.dataUtil.fileDtoToFileHandle(file[0]);
       });

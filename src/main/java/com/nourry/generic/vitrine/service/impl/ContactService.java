@@ -5,6 +5,7 @@ import com.nourry.generic.vitrine.service.IMailService;
 import com.nourry.generic.vitrine.service.dto.ContactDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,9 +17,9 @@ public class ContactService implements IContactService {
 
     @Override
     public void contacter(ContactDto contactDto) {
-        String nomPrenomTelephone = contactDto.getNom() + " " + contactDto.getPrenom() + " - " + contactDto.getNumeroTelephone();
-        mailService.sendEmail(contactDto.getEmail(), nomPrenomTelephone, contactDto.getMessage(), false, false);
+        mailService.sendContactMail(contactDto);
+        //        String nomPrenomTelephone = contactDto.getNom() + " " + contactDto.getPrenom() + " - " + contactDto.getTelephone();
+        //        mailService.sendEmail(mailUsername, nomPrenomTelephone, contactDto.getMessage(), false, false);
 
-        log.info("Je te contacte");
     }
 }

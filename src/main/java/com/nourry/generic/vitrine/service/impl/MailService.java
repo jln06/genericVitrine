@@ -9,6 +9,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,8 +34,13 @@ public class MailService implements IMailService {
     private static final String NOM = "nom";
     private static final String PRENOM = "prenom";
     private static final String TELEPHONE = "telephone";
+    private static final String MESSAGE = "message";
+    private static final String EMAIL = "email";
 
     private static final String BASE_URL = "baseUrl";
+
+    @Value("${spring.mail.username}")
+    private String mailUsername;
 
     private final JHipsterProperties jHipsterProperties;
 
@@ -75,6 +81,7 @@ public class MailService implements IMailService {
             message.setTo(to);
             message.setFrom(jHipsterProperties.getMail().getFrom());
             message.setSubject(subject);
+            message.setReplyTo(to);
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
             log.debug("Sent email to User '{}'", to);
@@ -91,7 +98,6 @@ public class MailService implements IMailService {
             return;
         }
         Context context = initContextUser(user);
-
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, context.getLocale());
         sendEmail(user.getEmail(), subject, content, false, true);
@@ -101,13 +107,13 @@ public class MailService implements IMailService {
     @Async
     public void sendContactEmail(ContactDto contactDto, String templateName, String titleKey) {
         if (contactDto.getEmail() == null) {
-            log.debug("Impossible d'enovoyer l'email car non renseigné");
+            log.debug("Impossible d'envoyer l'email car non renseigné");
             return;
         }
         Context context = initContextForContact(contactDto);
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, context.getLocale());
-        sendEmail(contactDto.getEmail(), subject, content, false, true);
+        sendEmail(this.mailUsername, subject, content, false, true);
     }
 
     private Context initContextForContact(ContactDto contactDto) {
@@ -115,7 +121,9 @@ public class MailService implements IMailService {
         Context context = new Context(locale);
         context.setVariable(NOM, contactDto.getNom());
         context.setVariable(PRENOM, contactDto.getPrenom());
-        context.setVariable(TELEPHONE, contactDto.getNumeroTelephone());
+        context.setVariable(TELEPHONE, contactDto.getTelephone());
+        context.setVariable(EMAIL, contactDto.getEmail());
+        context.setVariable(MESSAGE, contactDto.getMessage());
         return context;
     }
 
@@ -125,6 +133,13 @@ public class MailService implements IMailService {
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         return context;
+    }
+
+    @Override
+    @Async
+    public void sendContactMail(ContactDto contactDto) {
+        log.debug("Sending activation email to '{}'", contactDto.getEmail());
+        sendContactEmail(contactDto, "mail/contactEmail", "contact.title");
     }
 
     @Override

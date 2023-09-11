@@ -26,13 +26,11 @@ export class BanniereComponent implements OnInit {
   }
 
   onFileUploaded($event: FileHandle[]): void {
-    console.log('photo uploadée');
     this.banniere = $event[0];
     this.updatePhoto();
   }
 
   private updatePhoto() {
-    console.log('je vais updater la photo banniere');
     this.fileService.addImage(this.banniere, 'BANNIERE').subscribe(file => (this.banniere = this.dataUtils.fileDtoToFileHandle(file[0])));
   }
 }

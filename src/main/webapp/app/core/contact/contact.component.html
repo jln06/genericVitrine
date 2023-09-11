@@ -33,7 +33,8 @@
               [class.is-invalid]="telephone.invalid && (telephone.touched || telephone.dirty)"
             />
             <div class="invalid-feedback" *ngIf="telephone?.errors">
-              <ng-container *ngIf="telephone?.errors['required']"> Le numéro de téléphone est obligatoire</ng-container>
+              <ng-container *ngIf="telephone?.errors['required']">Le numéro de téléphone est obligatoire</ng-container>
+              <ng-container *ngIf="telephone?.errors['pattern']">Le numéro de téléphone doit être composé de 10 à 14 chiffres</ng-container>
             </div>
           </div>
           <div class="form-group col-md-6">

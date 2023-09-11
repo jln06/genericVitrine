@@ -47,7 +47,6 @@ export class InscriptionEcritureComponent implements OnInit {
       'Êtes-vous sûr(e) de vouloir annuler la partie inscription ? Toute modification sera perdue.';
     ngbModalRef.result.then(result => {
       if (this._inscriptionDescription !== undefined) {
-        console.log(this._inscriptionDescription);
         this.inscriptionDescriptionForm.patchValue(this._inscriptionDescription);
       }
     });

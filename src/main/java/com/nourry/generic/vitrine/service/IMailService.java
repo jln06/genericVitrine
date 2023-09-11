@@ -15,6 +15,9 @@ public interface IMailService {
     void sendContactEmail(ContactDto contactDto, String templateName, String titleKey);
 
     @Async
+    void sendContactMail(ContactDto contactDto);
+
+    @Async
     void sendActivationEmail(User user);
 
     @Async

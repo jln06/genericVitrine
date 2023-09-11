@@ -29,7 +29,6 @@ export class CreateGoodiesDialogComponent implements OnInit, AfterViewInit {
   }
 
   onUpload($event: FileHandle[]) {
-    console.log('goodies uploadé');
     this.filesHandle = $event[0];
   }
 

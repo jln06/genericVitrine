@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="fr">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="fr" charset="UTF-8">
   <head>
-    <title th:text="#{email.contact.title}">Prise de contact</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title th:text="#{contact.title}">Prise de contact</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" charset="UTF-8" />
     <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}" />
   </head>
+  <style>
+    .paragraph {
+      margin: 5px 0; /* Réduit la marge supérieure et inférieure à 5 pixels */
+    }
+  </style>
   <body>
-    <p th:text="#{email.contact.nom(${contactDto.nom})}">Nom</p>
-    <p th:text="#{email.contact.prenom(${contactDto.nom})}">Prénom</p>
-    <p th:text="#{email.contact.telephone(${contactDto.nom})}">Téléphone</p>
-    <p th:text="#{${contactDto.message}}">Message</p>
+    <p class="paragraph">
+      <span>Email : </span><a th:with="mailto=${'mailto:' + email}" th:href="${mailto}" th:text="${email}">Activation link</a>
+    </p>
+    <p class="paragraph" th:text="#{contact.nom(${nom})}">Nom</p>
+    <p class="paragraph" th:text="#{contact.prenom(${prenom})}">Prénom</p>
+    <p class="paragraph" th:text="#{contact.telephone(${telephone})}">Téléphone</p>
+    <br />
+    <p th:text="#{${message}}">Message</p>
   </body>
 </html>

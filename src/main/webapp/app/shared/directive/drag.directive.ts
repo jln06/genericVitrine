@@ -31,7 +31,6 @@ export class DragDirective {
     evt.stopPropagation();
     this.background = '#eee';
     if (evt.dataTransfer) {
-      console.log('data transfer is not null');
       Array.from(evt.dataTransfer.files)
         .filter(f => Array.of('image/jpeg', 'image/png', 'image/gif').includes(f.type))
         .forEach(f => this.files.emit(f));

@@ -38,7 +38,6 @@ export class AccountService {
       this.accountCache$ = null;
     }
     let b = this.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_GESTIONNAIRE']);
-    console.log('Authoritie : ' + b);
     this.editModeService.setUpdateMode(b);
   }
 

@@ -1,6 +1,6 @@
 <header>
   <div id="menuMob" [class.opened]="isNavbarCollapsed" (click)="toggleNavbar()" class="visible-xs" #menuMob>
-    <menu class="menu-button"> </menu>
+    <menu class="menu-button"></menu>
   </div>
   <div class="logo">
     <img src="./content/images/logo_club.png" alt="logo du club" width="100" />
@@ -31,7 +31,7 @@
         </a>
       </li>
       <li class="nav-item noStyle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/">
+        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" (click)="scrollTo('goodies')">
           <span> Goodies </span>
         </a>
       </li>
@@ -94,7 +94,14 @@
             </ng-container>
           </li>
           <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_GESTIONNAIRE']" class="noStyle">
-            <a class="nav-item" routerLink="admin/inscription-list" routerLinkActive="active">
+            <a
+              class="nav-item"
+              jhiCloseMenu
+              [htmlElement]="[nav, menuMob]"
+              routerLink="admin/inscription-list"
+              routerLinkActive="active"
+              (click)="scrollTo()"
+            >
               <span>Gestion des inscriptions</span>
             </a>
           </li>
@@ -138,12 +145,31 @@
 
       <li class="d-block d-sm-none noStyle">
         <div *ngIf="account !== null">
-          <a (click)="logout()" id="logout" data-cy="logout" title="déconnexion">
+          <a
+            (click)="logout()"
+            jhiCloseMenu
+            [htmlElement]="[nav, menuMob]"
+            style="cursor: pointer"
+            id="logoutMob"
+            data-cy="logout"
+            title="déconnexion"
+            (click)="scrollTo('body')"
+          >
             <i class="fas fa-sign-in-alt" aria-hidden="true"></i>Bienvenue {{ account?.login }}
           </a>
         </div>
         <div *ngIf="account === null">
-          <a title="connexion" (click)="login()" id="login" data-cy="login" routerLinkActive="active">
+          <a
+            title="connexion"
+            (click)="login()"
+            jhiCloseMenu
+            [htmlElement]="[nav, menuMob]"
+            id="loginMob"
+            data-cy="login"
+            style="cursor: pointer"
+            routerLinkActive="active"
+            (click)="scrollTo('body')"
+          >
             <i class="fas fa-sign-in-alt"></i>Connexion
           </a>
         </div>
@@ -151,12 +177,32 @@
     </ul>
   </nav>
   <div *ngIf="account !== null">
-    <a (click)="logout()" id="logout" data-cy="logout" title="déconnexion" class="admin d-none d-sm-block"
+    <a
+      (click)="logout()"
+      id="logout"
+      jhiCloseMenu
+      [htmlElement]="[nav, menuMob]"
+      style="cursor: pointer"
+      data-cy="logout"
+      title="déconnexion"
+      class="admin d-none d-sm-block"
+      (click)="scrollTo('body')"
       ><i class="fas fa-sign-in-alt"></i
     ></a>
   </div>
   <div *ngIf="account === null">
-    <a class="admin d-none d-sm-block" title="connexion" (click)="login()" id="login" data-cy="login" routerLinkActive="active">
+    <a
+      class="admin d-none d-sm-block"
+      jhiCloseMenu
+      [htmlElement]="[nav, menuMob]"
+      title="connexion"
+      style="cursor: pointer"
+      (click)="login()"
+      id="login"
+      data-cy="login"
+      routerLinkActive="active"
+      (click)="scrollTo('body')"
+    >
       <i class="fas fa-sign-in-alt"></i>
     </a>
   </div>
