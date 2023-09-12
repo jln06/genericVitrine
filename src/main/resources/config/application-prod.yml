@@ -41,16 +41,22 @@ spring:
       auto-commit: false
   jpa:
     database-platform: tech.jhipster.domain.util.FixedPostgreSQL10Dialect
-  elasticsearch:
-    uris: http://localhost:9200
+  #  elasticsearch:
+  #    uris: http://localhost:9200
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: smtp.ionos.fr
+    port: 465
+    username: contact@frenchrivieraskipping.fr
+    password: frv@06140
+
+    properties:
+      'mail.smtp.ssl.enable': true
+      'mail.transport.protocol': smtp
+      'mail.smtp.auth': true
+      'mail.smtp.starttls.enable': true
   thymeleaf:
     cache: true
 

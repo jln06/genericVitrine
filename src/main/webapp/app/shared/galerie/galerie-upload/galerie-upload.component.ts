@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable, Observer } from 'rxjs';
 import { EditModeService } from '../../../core/service/edit-mode.service';
 import { AlertService } from '../../../core/util/alert.service';
 import { DataUtils } from '../../../core/util/data-util.service';
 import { FileHandle } from '../../../entities/model/file-handle.model';
+import * as imageConversion from 'image-conversion';
 
 @Component({
   selector: 'jhi-galerie-upload',
@@ -33,13 +34,18 @@ export class GalerieUploadComponent implements OnInit {
     if (this.verificationFormatImage(files)) {
       if (files.length > 0) {
         this.filesHandle = [];
+        const observables: Observable<void>[] = [];
         if (!this.singleMode) {
-          Array.from(files as File[]).forEach(f => this.pushFile(f));
+          Array.from(files as File[]).forEach(f => {
+            observables.push(this.pushFile(f));
+          });
         } else {
-          this.pushFile(files[0]);
+          observables.push(this.pushFile(files[0]));
         }
+        forkJoin(observables).subscribe(() => {
+          this.fileHandleUploaded.emit(this.filesHandle);
+        });
       }
-      this.fileHandleUploaded.emit(this.filesHandle);
     }
   }
 
@@ -66,7 +72,19 @@ export class GalerieUploadComponent implements OnInit {
     return isValid;
   }
 
-  pushFile(file: File): void {
-    this.filesHandle.push(this.dataUtils.fileToFileHandle(file));
+  pushFile(file: File): Observable<void> {
+    return new Observable((observer: Observer<void>) => {
+      imageConversion
+        .compress(file, 0.6)
+        .then(res => {
+          const fileCompressed = new File([res], file.name, { type: res.type });
+          this.filesHandle.push(this.dataUtils.fileToFileHandle(fileCompressed));
+          observer.next();
+          observer.complete();
+        })
+        .catch(error => {
+          observer.error(error); // Émettre une erreur en cas d'échec
+        });
+    });
   }
 }

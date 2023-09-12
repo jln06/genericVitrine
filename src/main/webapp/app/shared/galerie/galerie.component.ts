@@ -10,6 +10,7 @@ import { NgxGalleryAction } from '@kolkov/ngx-gallery/lib/ngx-gallery-action';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { scrollTo } from '../../core/util/viewUtil';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LoaderService } from '../service/loader.service';
 
 @Component({
   selector: 'jhi-galerie',
@@ -32,8 +33,7 @@ export class GalerieComponent implements OnInit, AfterViewInit {
     private fileService: FileService,
     private dataUtils: DataUtils,
     private modalService: NgbModal,
-    private renderer: Renderer2,
-    private el: ElementRef
+    private loaderService: LoaderService
   ) {}
 
   ngOnInit(): void {
@@ -110,6 +110,7 @@ export class GalerieComponent implements OnInit, AfterViewInit {
 
   recupererGallerie2() {
     this.fileService.recupererGalerieFiles().subscribe(data => {
+      this.loaderService.setLoading(true);
       if (data.length > 0) {
         let galleryImages: CustomNgxGalleryImage[] = [];
         let fileHandleTemp: FileHandle[] = [];
@@ -125,6 +126,7 @@ export class GalerieComponent implements OnInit, AfterViewInit {
         });
         this.galleryImages = galleryImages;
       }
+      this.loaderService.setLoading(false);
     });
   }
 

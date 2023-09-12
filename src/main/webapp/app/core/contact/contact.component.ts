@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SecurityContext } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactService } from '../service/contact.service';
 import { Contact } from '../../entities/model/contact.model';
 import { AlertService } from '../util/alert.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'jhi-contact',
@@ -11,8 +12,14 @@ import { AlertService } from '../util/alert.service';
 })
 export class ContactComponent implements OnInit {
   formData: FormGroup;
+  formDataSubmitted = false;
 
-  constructor(private formbuilder: FormBuilder, private contactService: ContactService, private alertService: AlertService) {}
+  constructor(
+    private formbuilder: FormBuilder,
+    private contactService: ContactService,
+    private alertService: AlertService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -29,25 +36,35 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit(value: any): void {
+    this.formDataSubmitted = true;
     if (this.formData.invalid) {
       this.formData.markAllAsTouched();
       return;
     }
-    this.contactService.contacter(value as Contact).subscribe(
-      () => {
-        this.alertService.addAlert({
-          type: 'success',
-          message: 'Message envoyé',
-        });
-        // this.formData.reset();
-        scrollTo(0, 0);
-      },
-      () =>
-        this.alertService.addAlert({
-          type: 'danger',
-          message: "Erreur lors de l'envoi du message",
-        })
-    );
+    this.contactService
+      .contacter({
+        nom: value.nom,
+        prenom: value.prenom,
+        email: value.email,
+        telephone: value.telephone,
+        message: value.message.replaceAll('\n', '<br>'),
+      })
+      .subscribe(
+        () => {
+          this.alertService.addAlert({
+            type: 'success',
+            message: 'Message envoyé',
+          });
+          this.formData.reset();
+          this.formDataSubmitted = false;
+          scrollTo(0, 0);
+        },
+        () =>
+          this.alertService.addAlert({
+            type: 'danger',
+            message: "Erreur lors de l'envoi du message",
+          })
+      );
   }
 
   get nom(): AbstractControl | null {

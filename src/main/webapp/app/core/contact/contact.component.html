@@ -14,7 +14,7 @@
               placeholder="Votre adresse e-mail"
               aria-label="Votre adresse e-mail"
               formControlName="email"
-              [class.is-invalid]="email.invalid && (email.touched || email.dirty)"
+              [class.is-invalid]="formDataSubmitted && email.invalid && (email.touched || email.dirty)"
             />
             <div class="invalid-feedback" *ngIf="email?.errors">
               <ng-container *ngIf="email?.errors['required']"> L'émail est obligatoire</ng-container>
@@ -30,7 +30,7 @@
               aria-describedby="telephoneHelp"
               placeholder="Votre numéro de téléphone"
               formControlName="telephone"
-              [class.is-invalid]="telephone.invalid && (telephone.touched || telephone.dirty)"
+              [class.is-invalid]="formDataSubmitted && telephone.invalid && (telephone.touched || telephone.dirty)"
             />
             <div class="invalid-feedback" *ngIf="telephone?.errors">
               <ng-container *ngIf="telephone?.errors['required']">Le numéro de téléphone est obligatoire</ng-container>
@@ -46,7 +46,7 @@
               aria-describedby="nomHelp"
               placeholder="Votre nom"
               formControlName="nom"
-              [class.is-invalid]="nom.invalid && (nom.touched || nom.dirty)"
+              [class.is-invalid]="formDataSubmitted && nom.invalid && (nom.touched || nom.dirty)"
             />
             <div class="invalid-feedback" *ngIf="nom?.hasError">
               <ng-container *ngIf="nom?.hasError('required')"> Le nom est obligatoire</ng-container>
@@ -61,7 +61,7 @@
               aria-describedby="prenomHelp"
               placeholder="Votre prenom"
               formControlName="prenom"
-              [class.is-invalid]="prenom.invalid && (prenom.touched || prenom.dirty)"
+              [class.is-invalid]="formDataSubmitted && prenom.invalid && (prenom.touched || prenom.dirty)"
             />
             <div class="invalid-feedback" *ngIf="prenom?.errors">
               <ng-container *ngIf="prenom?.errors['required']"> Le prénom est obligatoire</ng-container>

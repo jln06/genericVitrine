@@ -23,6 +23,7 @@ import { GalerieUploadComponent } from './galerie/galerie-upload/galerie-upload.
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { closeMenuDirective } from './directive/close-menu.directive';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -48,6 +49,7 @@ import { closeMenuDirective } from './directive/close-menu.directive';
     GalerieDisplayComponent,
     GalerieUploadComponent,
     ConfirmDialogComponent,
+    SpinnerComponent,
   ],
   exports: [
     SharedLibsModule,

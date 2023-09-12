@@ -5,6 +5,7 @@ import com.nourry.generic.vitrine.service.IMailService;
 import com.nourry.generic.vitrine.service.dto.ContactDto;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Optional;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -64,7 +65,7 @@ public class MailService implements IMailService {
 
     @Async
     @Override
-    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
+    public void sendEmail(String to, Optional<String> replyTo, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug(
             "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
             isMultipart,
@@ -81,7 +82,7 @@ public class MailService implements IMailService {
             message.setTo(to);
             message.setFrom(jHipsterProperties.getMail().getFrom());
             message.setSubject(subject);
-            message.setReplyTo(to);
+            message.setReplyTo(replyTo.orElse(to));
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
             log.debug("Sent email to User '{}'", to);
@@ -100,7 +101,7 @@ public class MailService implements IMailService {
         Context context = initContextUser(user);
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, context.getLocale());
-        sendEmail(user.getEmail(), subject, content, false, true);
+        sendEmail(user.getEmail(), Optional.empty(), subject, content, false, true);
     }
 
     @Override
@@ -113,12 +114,11 @@ public class MailService implements IMailService {
         Context context = initContextForContact(contactDto);
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, context.getLocale());
-        sendEmail(this.mailUsername, subject, content, false, true);
+        sendEmail(this.mailUsername, Optional.of(contactDto.getEmail()), subject, content, false, true);
     }
 
     private Context initContextForContact(ContactDto contactDto) {
-        Locale locale = Locale.forLanguageTag("fr");
-        Context context = new Context(locale);
+        Context context = new Context(Locale.FRANCE);
         context.setVariable(NOM, contactDto.getNom());
         context.setVariable(PRENOM, contactDto.getPrenom());
         context.setVariable(TELEPHONE, contactDto.getTelephone());

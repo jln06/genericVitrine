@@ -556,3 +556,7 @@ ngb-modal-window {
 .icon-update-goodies {
   left: 94%;
 }
+
+#galerie {
+  position: relative;
+}

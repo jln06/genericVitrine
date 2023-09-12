@@ -1,4 +1,5 @@
 <div *ngIf="_filesHandle">
+  <jhi-spinner></jhi-spinner>
   <ngb-carousel class="myCarousel carousel-custom" #carousel [activeId]="activeSliderId" (slide)="updateActiveSlideId($event)">
     <ng-template ngbSlide id="ngb-slide-{{ image?.id }}" *ngFor="let image of _filesHandle; let i = index">
       <div class="wrapper">
