@@ -30,25 +30,26 @@ export class InscriptionListComponent implements OnInit {
 
   rows: any = [];
 
-  constructor(
-    private inscriptionService: InscriptionService,
-    private readonly chRef: ChangeDetectorRef,
-    private fileService: FileService,
-    private dataUtils: DataUtils
-  ) {}
+  constructor(private inscriptionService: InscriptionService) {}
 
   ngOnInit(): void {
     this.inscriptionService.getSaisons().subscribe(data => {
       if (data.length > 0) {
         this.saisonList = data;
         this.saisonSelected = data.filter(s => s.active).map(s => s.annees)[0];
-        this.inscriptionObservable = this.inscriptionService.searchInscriptions(this.saisonSelected).pipe(
-          tap(inscriptions => this.inscriptions.next(inscriptions)),
-          tap(inscriptions => this.showTable.next(!!inscriptions))
-        );
-        this.inscriptionObservable.subscribe();
+        this.loadInscriptions();
       }
     });
+  }
+
+  loadInscriptions(): void {
+    this.inscriptionService
+      .searchInscriptions(this.saisonSelected)
+      .pipe(
+        tap(inscriptions => this.inscriptions.next(inscriptions)),
+        tap(inscriptions => this.showTable.next(!!inscriptions))
+      )
+      .subscribe();
   }
 
   downloadExcel(): void {
@@ -66,11 +67,11 @@ export class InscriptionListComponent implements OnInit {
   }
 
   onSelectChange($event: any): void {
-    this.inscriptionObservable.subscribe();
+    this.loadInscriptions();
   }
 
   onChangePaye(number: number): void {
-    this.inscriptionService.payeInscription(number).subscribe(() => this.inscriptionObservable.subscribe());
+    this.inscriptionService.payeInscription(number).subscribe(() => this.loadInscriptions());
   }
 
   downloadFile(idPieceJointe: number): void {

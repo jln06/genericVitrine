@@ -86,10 +86,10 @@
         <ngx-datatable-column name="Assurance" [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div class="center-content">
-              <a *ngIf="row.idAssurance" (click)="openFile(row.idAssurance)">
+              <a *ngIf="row.idAssurance" class="hand_cursor" (click)="openFile(row.idAssurance)">
                 <fa-icon icon="eye"></fa-icon>
               </a>
-              <a *ngIf="row.idAssurance" (click)="downloadFile(row.idAssurance)">
+              <a *ngIf="row.idAssurance" class="hand_cursor" (click)="downloadFile(row.idAssurance)">
                 <i class="fa-solid fa-download"></i>
               </a>
             </div>
@@ -98,10 +98,10 @@
         <ngx-datatable-column name="Certificat médical" [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div class="center-content">
-              <a *ngIf="row.idCertificatMedical" (click)="openFile(row.idCertificatMedical)">
+              <a *ngIf="row.idCertificatMedical" class="hand_cursor" (click)="openFile(row.idCertificatMedical)">
                 <fa-icon icon="eye"></fa-icon>
               </a>
-              <a *ngIf="row.idCertificatMedical" (click)="downloadFile(row.idCertificatMedical)">
+              <a *ngIf="row.idCertificatMedical" class="hand_cursor" (click)="downloadFile(row.idCertificatMedical)">
                 <i class="fa-solid fa-download"></i>
               </a>
             </div>
@@ -110,7 +110,7 @@
         <ngx-datatable-column name="Cotisation" prop="paye" [sortable]="true">
           <ng-template let-row="row" ngx-datatable-cell-template class="align-content-center">
             <div class="center-content">
-              <input type="checkbox" [checked]="row?.paye" (change)="onChangePaye(row.id)" />
+              <input type="checkbox" class="hand_cursor" [checked]="row?.paye" (change)="onChangePaye(row.id)" />
             </div>
           </ng-template>
         </ngx-datatable-column>

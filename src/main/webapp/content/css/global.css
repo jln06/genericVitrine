@@ -739,3 +739,7 @@ ngb-modal-window {
   text-align: center;
   background-color: rgb(236, 234, 111);
 }
+
+.hand_cursor {
+  cursor: pointer;
+}
