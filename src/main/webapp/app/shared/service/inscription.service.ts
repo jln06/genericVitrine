@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ApplicationConfigService } from '../../core/config/application-config.service';
-import { Contact } from '../../entities/model/contact.model';
 import { Inscription } from '../../entities/model/inscription.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Saison } from '../../entities/model/saison.model';
+import { Pair } from '../model/pair';
 
 @Injectable({
   providedIn: 'root',
@@ -12,17 +12,20 @@ import { Saison } from '../../entities/model/saison.model';
 export class InscriptionService {
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/public/inscription');
   private resourceUrlSaison = this.applicationConfigService.getEndpointFor('api/public/saison');
-
-  private inscriptionsSubject = new BehaviorSubject<Inscription[]>([]);
-  readonly inscriptionsSuject$ = this.inscriptionsSubject.asObservable();
+  private resourceUrlSituationFamiliale = this.applicationConfigService.getEndpointFor('api/public/situation-familiale');
+  private submitted = new BehaviorSubject(false);
+  readonly submitted$ = this.submitted.asObservable();
 
   constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
-  inscrire(inscription: Inscription): Observable<{}> {
-    return this.http.post(`${this.resourceUrl}`, inscription);
+  inscrire(formData: FormData): Observable<{}> {
+    const headers = new HttpHeaders({
+      enctype: 'multipart/form-data',
+    });
+    return this.http.post(`${this.resourceUrl}`, formData, { headers });
   }
 
-  getInscription(saison: String): Observable<Inscription[]> {
+  getInscription(saison: string): Observable<Inscription[]> {
     return this.http.get<Inscription[]>(`${this.resourceUrl}/${saison}`);
   }
 
@@ -30,10 +33,8 @@ export class InscriptionService {
     return this.http.get<Saison[]>(`${this.resourceUrlSaison}`);
   }
 
-  searchInscriptions(saison: string): void {
-    this.getInscription(saison).subscribe(data => {
-      this.inscriptionsSubject.next(data);
-    });
+  searchInscriptions(saison: string): Observable<Inscription[]> {
+    return this.getInscription(saison);
   }
 
   payeInscription(id: number): Observable<{}> {
@@ -42,5 +43,24 @@ export class InscriptionService {
 
   downloadExcel(saison: string): Observable<Blob> {
     return this.http.get(`${this.resourceUrl}/excel/${saison}`, { responseType: 'blob' });
+  }
+
+  telechargerFichier(id: number): Observable<any> {
+    return this.http.get(`${this.resourceUrl}/download/piece-jointe/${id}`, {
+      observe: 'response',
+      responseType: 'blob',
+    });
+  }
+
+  getSituationsFamiliale(): Observable<Pair<string, string>[]> {
+    return this.http.get<Pair<string, string>[]>(`${this.resourceUrlSituationFamiliale}`);
+  }
+
+  flagSubmitForm(): void {
+    this.submitted.next(true);
+  }
+
+  resetSubmit(): void {
+    this.submitted.next(false);
   }
 }

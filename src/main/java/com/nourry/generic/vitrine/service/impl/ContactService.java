@@ -18,8 +18,5 @@ public class ContactService implements IContactService {
     @Override
     public void contacter(ContactDto contactDto) {
         mailService.sendContactMail(contactDto);
-        //        String nomPrenomTelephone = contactDto.getNom() + " " + contactDto.getPrenom() + " - " + contactDto.getTelephone();
-        //        mailService.sendEmail(mailUsername, nomPrenomTelephone, contactDto.getMessage(), false, false);
-
     }
 }

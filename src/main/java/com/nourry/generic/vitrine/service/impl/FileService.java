@@ -11,17 +11,30 @@ import com.nourry.generic.vitrine.service.dto.FileDto;
 import com.nourry.generic.vitrine.service.dto.ImageInfoDto;
 import com.nourry.generic.vitrine.web.rest.errors.FileStorageException;
 import com.nourry.generic.vitrine.web.rest.errors.MyFileNotFoundException;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,7 +89,7 @@ public class FileService implements IFileService {
         try {
             Optional.ofNullable(imageInfoDto.getId()).ifPresent(id -> log.debug("Mise à jour image id : {}", id));
             log.debug("Enregistrement physique image {}", imageInfoDto.getNomImage());
-            Files.copy(imageInfoDto.getFile().getInputStream(), imageInfoDto.getTargetLocation(), StandardCopyOption.REPLACE_EXISTING);
+            compressFile2(imageInfoDto);
             Image image = Optional
                 .ofNullable(imageInfoDto.getId())
                 .flatMap(imageRepository::findById)
@@ -92,6 +105,47 @@ public class FileService implements IFileService {
             imageRepository.save(image);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + imageInfoDto.getFile().getName() + ". Please try again!", ex);
+        }
+    }
+
+    private void compressFile(ImageInfoDto imageInfoDto) throws IOException {
+        BufferedImage inputImage = ImageIO.read(imageInfoDto.getFile().getInputStream());
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(imageInfoDto.getFile().getContentType());
+        ImageWriter writer = writers.next();
+        ImageOutputStream outputStream = ImageIO.createImageOutputStream(imageInfoDto.getTargetLocation());
+        writer.setOutput(outputStream);
+        ImageWriteParam params = writer.getDefaultWriteParam();
+        params.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        params.setCompressionQuality(0.5f);
+
+        writer.write(null, new IIOImage(inputImage, null, null), params);
+
+        outputStream.close();
+        writer.dispose();
+    }
+
+    private void compressFile2(ImageInfoDto imageInfoDto) throws IOException {
+        log.debug("Compression de l'image");
+        try {
+            MultipartFile file = imageInfoDto.getFile();
+            BufferedImage inputImage = ImageIO.read(file.getInputStream());
+            Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(FilenameUtils.getExtension(file.getOriginalFilename()));
+            ImageWriter writer = writers.next();
+            ImageWriteParam params = writer.getDefaultWriteParam();
+            params.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            params.setCompressionQuality(0.5f);
+            File targetLocation = imageInfoDto.getTargetLocation().toFile();
+            Path tempLocation = Paths.get(targetLocation.toString() + ".temp");
+            try (ImageOutputStream outputStream = ImageIO.createImageOutputStream(tempLocation.toFile())) {
+                writer.setOutput(outputStream);
+                writer.write(null, new IIOImage(inputImage, null, null), params);
+            } finally {
+                writer.dispose();
+            }
+            Files.copy(tempLocation, targetLocation.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            log.debug("Erreur lors de la compression de l'image", e);
+            Files.copy(imageInfoDto.getFile().getInputStream(), imageInfoDto.getTargetLocation(), StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
@@ -124,15 +178,38 @@ public class FileService implements IFileService {
             .orElseGet(ArrayList::new);
     }
 
+    public Page<FileDto> loadFileAsResourcePageable(ImageCategorieEnum categorie, Pageable pageable) {
+        log.debug("Verification existence repertoire {}", categorie);
+        return imageCategorieRepository
+            .findByCode(categorie)
+            .map(ImageCategorie::getChemin)
+            .map(this.fileStorageLocation::resolve)
+            .map(e -> this.getFilesPageable(e, categorie, pageable))
+            .orElseGet(Page::empty);
+    }
+
+    private Page<FileDto> getFilesPageable(Path directory, ImageCategorieEnum categorie, Pageable pageable) {
+        log.debug("Recuperation des photos {}", categorie);
+        List<FileDto> filesDto = new ArrayList<>();
+        Page<Image> images = imageRepository.findAll(pageable);
+        images
+            .map(imageInfo -> {
+                String fileName = imageInfo.getNom();
+                Path filePath = directory.resolve(fileName).normalize();
+                return getFileDto(filePath, imageInfo);
+            })
+            .forEach(fileDto -> fileDto.ifPresent(filesDto::add));
+        return new PageImpl<>(filesDto, images.getPageable(), images.getTotalElements());
+    }
+
     private List<FileDto> getFiles(Path directory, ImageCategorieEnum categorie) {
         log.debug("Recuperation des photos {}", categorie);
         List<FileDto> filesDto = new ArrayList<>();
         List<Image> imagesInfo = categorie.isRecupToute()
-            ? imageRepository.findByImageCategorieCodeOrderByCreatedDateAsc(categorie)
+            ? imageRepository.findByImageCategorieCodeOrderByCreatedDateDesc(categorie)
             : imageRepository.findFirstByImageCategorieCodeOrderByCreatedDateDesc(categorie);
         imagesInfo.forEach(imageInfo -> {
             String fileName = imageInfo.getNom();
-            //                MimeType.valueOf(imageInfo.type)
             Path filePath = directory.resolve(fileName).normalize();
             getFileDto(filePath, imageInfo).ifPresent(filesDto::add);
         });

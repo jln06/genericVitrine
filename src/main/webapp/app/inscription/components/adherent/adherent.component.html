@@ -1,0 +1,195 @@
+<div [formGroup]="formAdherent" class="mt-3 mb-3" id="renouvellement">
+  <fieldset>
+    <legend>Adhérent</legend>
+    <div class="row g-3">
+      <div class="col-md-12 mb-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" formControlName="mineur" type="checkbox" id="flexSwitchMajeur" checked />
+          <label class="form-check-label" for="flexSwitchMajeur">L'adhérent est mineur</label>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="nomInscription">Nom <sup>*</sup></label>
+        <input
+          type="text"
+          class="form-control"
+          aria-label="nom"
+          maxlength="50"
+          id="nomInscription"
+          formControlName="nom"
+          [class.is-invalid]="nom?.invalid && (submitted$ | async)"
+        />
+        <div class="invalid-feedback" *ngIf="nom?.hasError && (submitted$ | async)">
+          <ng-container *ngIf="nom?.hasError('required')"> Saisir un nom</ng-container>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="prenomInscription">Prénom <sup>*</sup></label>
+        <input
+          type="text"
+          class="form-control"
+          aria-label="prénom"
+          maxlength="50"
+          id="prenomInscription"
+          formControlName="prenom"
+          [class.is-invalid]="prenom.invalid && (submitted$ | async)"
+        />
+        <div class="invalid-feedback" *ngIf="prenom?.hasError && (submitted$ | async)">
+          <ng-container *ngIf="prenom?.hasError('required')">Saisir un prénom</ng-container>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label>Date de naissance <sup>*</sup></label>
+        <div class="input-group">
+          <span class="input-group-text" (click)="d.toggle()" id="basic-addon1"><i class="fas fa-calendar"></i></span>
+          <input
+            class="form-control"
+            placeholder="Date de naissance"
+            name="dp"
+            formControlName="dateNaissance"
+            ngbDatepicker
+            [startDate]="getStartDate()"
+            [maxDate]="getStartDate()"
+            [class.is-invalid]="dateNaissance.invalid && (submitted$ | async)"
+            #d="ngbDatepicker"
+          />
+          <div class="invalid-feedback" *ngIf="dateNaissance?.hasError && (submitted$ | async)">
+            <ng-container *ngIf="dateNaissance?.hasError('required')">Saisir une date</ng-container>
+            <ng-container *ngIf="dateNaissance?.errors?.ngbDate?.maxDate">L'âge minimum requis est de 7 ans</ng-container>
+            <ng-container *ngIf="dateNaissance?.errors?.ngbDate?.invalid">Le format de date est incorect</ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3 majInfos" *ngIf="!mineur.value">
+        <label for="emailInscription">E-mail <sup>*</sup></label>
+        <input
+          type="email"
+          class="form-control"
+          formControlName="email"
+          aria-label="adresse e-mail"
+          maxlength="254"
+          id="emailInscription"
+          [class.is-invalid]="email.invalid && (submitted$ | async)"
+        />
+        <div class="invalid-feedback" *ngIf="email?.errors && (submitted$ | async)">
+          <ng-container *ngIf="email?.errors['required']"> Saisir une adresse émail</ng-container>
+          <ng-container *ngIf="email?.errors['email']"> L'adresse émail est au mauvais format</ng-container>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3 majInfos" *ngIf="!mineur.value">
+        <label for="telephoneInscription">Téléphone <sup>*</sup></label>
+        <input
+          type="telephone"
+          class="form-control"
+          formControlName="telephone"
+          aria-label="numéro de téléphone"
+          id="telephoneInscription"
+          [class.is-invalid]="telephone.invalid && (submitted$ | async)"
+        />
+        <div class="invalid-feedback" *ngIf="telephone?.errors && (submitted$ | async)">
+          <ng-container *ngIf="telephone?.errors['required']">Saisir une numéro de téléphone</ng-container>
+          <ng-container *ngIf="telephone?.errors['pattern']">Le numéro de téléphone ne doit contenir que des chiffres</ng-container>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="AdresseInscription">Adresse <sup>*</sup></label>
+        <input
+          type="text"
+          class="form-control"
+          aria-label="adresse"
+          maxlength="150"
+          id="adresseInscription"
+          formControlName="adresse"
+          [class.is-invalid]="adresse.invalid && (submitted$ | async)"
+        />
+        <div class="invalid-feedback" *ngIf="adresse?.hasError && (submitted$ | async)">
+          <ng-container *ngIf="adresse?.hasError('required')">Saisir une adresse</ng-container>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="codePostalInscription">Code postal <sup>*</sup></label>
+        <input
+          type="text"
+          class="form-control"
+          aria-label="code postal"
+          id="codePostalInscription"
+          formControlName="codePostal"
+          [class.is-invalid]="codePostal.invalid && (submitted$ | async)"
+        />
+        <div class="invalid-feedback" *ngIf="codePostal?.hasError && (submitted$ | async)">
+          <ng-container *ngIf="codePostal?.hasError('required')">Saisir un code postal</ng-container>
+          <ng-container *ngIf="codePostal?.hasError('pattern') || codePostal?.hasError('minlength')"
+            >Un code postal est composé de 5 chiffres</ng-container
+          >
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="villeInscription">Ville <sup>*</sup></label>
+        <input
+          type="text"
+          class="form-control"
+          aria-label="ville"
+          id="villeInscription"
+          formControlName="ville"
+          [class.is-invalid]="ville.invalid && (submitted$ | async)"
+        />
+        <div class="invalid-feedback" *ngIf="ville?.hasError && (submitted$ | async)">
+          <ng-container *ngIf="ville?.hasError('required')">Saisir une ville</ng-container>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="urgence">Personne à contacter en cas d'urgence <sup>*</sup></label>
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon2"><i class="fas fa-phone"></i></span>
+          <input
+            type="tel"
+            class="form-control"
+            formControlName="numeroUrgence"
+            [class.is-invalid]="numeroUrgence.invalid && (submitted$ | async)"
+            id="urgence"
+            required
+          />
+          <div class="invalid-feedback" *ngIf="numeroUrgence?.hasError && (submitted$ | async)">
+            <ng-container *ngIf="numeroUrgence?.hasError('required')">Saisir une numéro de téléphone</ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 mb-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" formControlName="portLunette" type="checkbox" id="flexSwitchLunettes" />
+          <label class="form-check-label" for="flexSwitchLunettes">Port des lunettes</label>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" formControlName="allergie" type="checkbox" id="flexSwitchAllergie" />
+          <label class="form-check-label" for="flexSwitchAllergie">Allergie alimentaire</label>
+        </div>
+      </div>
+      <div class="col-md-12 mb-3" id="infosSupp" *ngIf="allergie?.value">
+        <label for="infosAllergie">Merci de préciser l'allergie <sup>*</sup></label>
+        <input
+          type="text"
+          formControlName="allergieType"
+          [class.is-invalid]="allergieType.invalid && (submitted$ | async)"
+          class="form-control"
+          id="infosAllergie"
+        />
+        <div class="invalid-feedback" *ngIf="allergieType?.hasError && (submitted$ | async)">
+          <ng-container *ngIf="allergieType?.hasError('required')">Prèciser l'allergie</ng-container>
+        </div>
+      </div>
+      <div class="col-md-12 mb-3">
+        <label for="autre">Autre problème de santé</label>
+        <input type="text" class="form-control" formControlName="santeAutre" id="autre" />
+      </div>
+      <div class="col-md-12 mb-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" formControlName="UrgenceAutorise" type="checkbox" id="flexSwitchAutorisation" checked />
+          <label class="form-check-label" for="flexSwitchAutorisation">J'autorise le club à contacter les secours en cas d'urgence</label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>

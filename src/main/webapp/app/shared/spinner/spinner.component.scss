@@ -1,5 +1,5 @@
 .cssload-container {
-  position: absolute;
+  position: fixed;
   width: 100%;
   left: 0;
   right: 0;
@@ -15,10 +15,10 @@
   position: absolute;
   left: 48%;
   top: 40%;
-  width: 63px;
-  height: 63px;
+  width: 150px;
+  height: 150px;
   margin: 0 auto;
-  border: 4px solid rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
   border-radius: 50%;
   border-left-color: transparent;
   border-right-color: transparent;
@@ -31,7 +31,7 @@
 
 @keyframes cssload-spin {
   100% {
-    transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }

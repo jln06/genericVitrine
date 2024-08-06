@@ -4,9 +4,6 @@ import { RouterModule } from '@angular/router';
 import { errorRoute } from './layouts/error/error.route';
 import { navbarRoute } from './layouts/navbar/navbar.route';
 import { DEBUG_INFO_ENABLED } from 'app/app.constants';
-import { Authority } from 'app/config/authority.constants';
-
-import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 
 @NgModule({
   imports: [
@@ -29,13 +26,23 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
         },
         {
+          path: 'inscription',
+          loadChildren: () => import('./inscription/inscription.module').then(m => m.InscriptionModule),
+        },
+        {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(m => m.EntityRoutingModule),
+        },
+        {
+          path: 'gallerie',
+          loadChildren: () => import('./gallerie/gallerie.module').then(m => m.GallerieModule),
         },
         navbarRoute,
         ...errorRoute,
       ],
-      { enableTracing: DEBUG_INFO_ENABLED }
+      {
+        enableTracing: DEBUG_INFO_ENABLED,
+      }
     ),
   ],
   exports: [RouterModule],

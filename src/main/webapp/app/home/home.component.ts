@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
-import { EditModeService } from '../core/service/edit-mode.service';
+import { EditModeService } from './service/edit-mode.service';
 
 @Component({
   selector: 'jhi-home',

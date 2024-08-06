@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.FRANCE}" charset="UTF-8">
+  <head>
+    <title th:text="#{contact.title}">Inscription</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" charset="UTF-8" />
+    <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}" />
+  </head>
+  <body>
+    <p>
+      Bonjour, <br /><br />
+      Votre inscription pour
+      <span style="margin: 1px 0" th:text="${nom}">Nom</span>
+      <span style="margin: 1px 0" th:text="${prenom}">Prénom</span> a bien été prise en compte.<br />
+      Les inscriptions seront définitives après règlement auprès du club.<br /><br />
+      Pour toute question ou information supplémentaire, n'hésitez pas à nous contacter.<br /><br />
+      Nous vous remercions pour votre confiance.
+    </p>
+
+    <p>L'équipe de French Riviera Skipping</p>
+  </body>
+</html>

@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface InscriptionRespository extends JpaRepository<Inscription, Long> {
-    List<Inscription> findBySaisonAnnees(String anneeLibelle);
+    List<Inscription> findBySaisonAnneesOrderByCreatedDateDesc(String anneeLibelle);
 }

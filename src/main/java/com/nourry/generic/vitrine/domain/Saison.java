@@ -15,7 +15,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "saison")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "saison")
+//@org.springframework.data.elasticsearch.annotations.Document(indexName = "saison")
 public class Saison implements Serializable {
 
     private static final long serialVersionUID = 1L;

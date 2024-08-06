@@ -156,11 +156,31 @@ div.logo {
 body section {
   padding: 80px 0;
 }
+
 .mainBanner {
   position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  /*align-items: flex-start; */
+  /*/ align-items: flex-end; !* à choisir *!*/
 }
+
 .mainImg {
   width: 100%;
+}
+
+.mainTitle {
+  position: absolute;
+  font-size: 75px;
+  /*MOB 768 : font-size: 22px;*/
+  /*TAB 1024 : 40px*/
+  color: #fff; /* à choisir */
+  font-family: 'Englebert';
+  text-align: center;
 }
 
 section#presentation,
@@ -172,6 +192,7 @@ section#contact {
 section#login {
   min-height: 60vh;
 }
+
 #presentation .container {
   position: relative;
 }
@@ -201,6 +222,7 @@ button .fa-calendar {
   height: 150px;
   border-radius: 150px;
 }
+
 #goodies .splide__slide {
   border: 1px solid #eee;
   border-radius: 5px;
@@ -271,6 +293,43 @@ button .fa-calendar {
 
 /* FIN CONTENU */
 
+fieldset {
+  margin: 25px 0;
+  background-color: #eee;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+legend {
+  border-bottom: 1px solid;
+  padding: 0 0 10px;
+  margin-bottom: 10px;
+}
+
+sup {
+  color: #f75e62;
+}
+
+.form-check-input:checked {
+  background-color: #20c997;
+  border-color: #20c997;
+}
+
+button.btn.btn-primary {
+  background-color: #00185c;
+  border-color: #00185c;
+}
+
+button.btn.btn-primary:active {
+  background-color: #00185c;
+  border-color: #00185c;
+}
+
+.loi {
+  font-weight: 600;
+  color: #f75e62;
+}
+
 /* DEBUT FOOTER */
 footer {
   padding: 50px 0px;
@@ -322,6 +381,7 @@ footer .social ul li .fab {
     text-align: center;
     padding: 10px 25px;
   }
+
   nav > ul li.nav-item > a:after,
   a.dropdown-item:after {
     display: block !important;
@@ -339,6 +399,7 @@ footer .social ul li .fab {
     width: 100%;
     transition: 0.3s width ease;
   }
+
   a.dropdown-item:hover {
     background-color: transparent !important;
   }
@@ -378,8 +439,14 @@ footer .social ul li .fab {
   body.navOpened {
     overflow: hidden;
   }
+
+  .mainTitle {
+    font-size: 22px;
+  }
+
   header {
     z-index: 15;
+    margin-bottom: 0;
   }
 
   #menuMob {
@@ -557,6 +624,118 @@ ngb-modal-window {
   left: 94%;
 }
 
+.cssload-container {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+}
+
+.cssload-speeding-wheel {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 48%;
+  top: 40%;
+  width: 63px;
+  height: 63px;
+  margin: 0 auto;
+  border: 4px solid rgb(0, 0, 0);
+  border-radius: 50%;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  animation: cssload-spin 500ms infinite linear;
+  -o-animation: cssload-spin 500ms infinite linear;
+  -ms-animation: cssload-spin 500ms infinite linear;
+  -webkit-animation: cssload-spin 500ms infinite linear;
+  -moz-animation: cssload-spin 500ms infinite linear;
+}
+
+@keyframes cssload-spin {
+  100% {
+    transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-o-keyframes cssload-spin {
+  100% {
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-ms-keyframes cssload-spin {
+  100% {
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes cssload-spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes cssload-spin {
+  100% {
+    -moz-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
 #galerie {
   position: relative;
+}
+
+.ngx-gallery-image {
+  background-size: contain !important;
+}
+
+.center-content {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
+}
+
+.paid-row {
+  background-color: #eee;
+}
+
+.search-results {
+  height: 30rem;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.products-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 100%;
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    min-height: 100%;
+  }
+}
+
+.data-card {
+  padding: 5px;
+  margin: 8px 0px;
+  width: 20%;
+  border: 1px solid black;
+  font-size: 30px;
+  text-align: center;
+  background-color: rgb(236, 234, 111);
 }

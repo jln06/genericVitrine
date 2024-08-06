@@ -1,14 +1,14 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { EditModeService } from '../../core/service/edit-mode.service';
+import { EditModeService } from '../../home/service/edit-mode.service';
 import { forkJoin, Observable } from 'rxjs';
-import { FileService } from '../../core/service/file.service';
+import { FileService } from '../../home/service/file.service';
 import { FileHandle } from '../../entities/model/file-handle.model';
-import { DataUtils } from '../../core/util/data-util.service';
+import { DataUtils } from '../util/data-util.service';
 import { NgxGalleryAnimation, NgxGalleryComponent, NgxGalleryImageSize, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { CustomNgxGalleryImage } from '../../entities/model/customNgxGallery';
 import { NgxGalleryAction } from '@kolkov/ngx-gallery/lib/ngx-gallery-action';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { scrollTo } from '../../core/util/viewUtil';
+import { scrollTo } from '../util/viewUtil';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoaderService } from '../service/loader.service';
 
@@ -69,7 +69,7 @@ export class GalerieComponent implements OnInit, AfterViewInit {
       {
         width: '100%',
         height: '800px',
-        thumbnailsColumns: 8,
+        thumbnailsColumns: 6,
         imageDescription: true,
         imageAnimation: NgxGalleryAnimation.Slide,
         thumbnailsSwipe: true,
@@ -103,7 +103,6 @@ export class GalerieComponent implements OnInit, AfterViewInit {
   onFileUploaded($event: FileHandle[]) {
     const observables = $event.filter(file => file.id == null).map(file => this.fileService.addImage(file, 'GALERIE'));
     forkJoin(observables).subscribe(() => {
-      // Toutes les observables sont terminées ici
       this.recupererGallerie2();
     });
   }
@@ -112,8 +111,8 @@ export class GalerieComponent implements OnInit, AfterViewInit {
     this.fileService.recupererGalerieFiles().subscribe(data => {
       this.loaderService.setLoading(true);
       if (data.length > 0) {
-        let galleryImages: CustomNgxGalleryImage[] = [];
-        let fileHandleTemp: FileHandle[] = [];
+        const galleryImages: CustomNgxGalleryImage[] = [];
+        const fileHandleTemp: FileHandle[] = [];
         data.forEach(fileDto => fileHandleTemp.push(this.dataUtils.fileDtoToFileHandle(fileDto)));
         fileHandleTemp.forEach(f => {
           galleryImages.push({
@@ -131,16 +130,20 @@ export class GalerieComponent implements OnInit, AfterViewInit {
   }
 
   deleteImage(event, index): void {
-    let ngbModalRef = this.modalService.open(ConfirmDialogComponent, { ariaLabelledBy: 'modal-basic-title' });
+    const ngbModalRef = this.modalService.open(ConfirmDialogComponent, { ariaLabelledBy: 'modal-basic-title' });
     ngbModalRef.componentInstance.confirmText = 'Etes vous sur de vouloir supprimer cette image ?';
     ngbModalRef.result
       .then(result => {
         const ids: number[] = [this.galleryImages[index]?.idPhoto];
+        this.loaderService.setLoading(true);
         this.fileService.deletePhoto(ids).subscribe(() => {
           this.recupererGallerie2();
           this.ngxgallery.show(index - 1);
         });
       })
-      .finally(() => scrollTo('galerie'));
+      .finally(() => {
+        scrollTo('galerie');
+        this.loaderService.setLoading(false);
+      });
   }
 }

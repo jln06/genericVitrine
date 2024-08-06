@@ -1,8 +1,11 @@
 package com.nourry.generic.vitrine.web.rest.controller;
 
+import com.nourry.generic.vitrine.domain.PieceJointe;
 import com.nourry.generic.vitrine.service.IInscriptionService;
+import com.nourry.generic.vitrine.service.IPieceJointeService;
 import com.nourry.generic.vitrine.service.dto.InscriptionDto;
 import com.nourry.generic.vitrine.service.dto.SaisonDto;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -13,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/public")
@@ -23,10 +27,17 @@ public class InscriptionController {
     @Autowired
     private IInscriptionService inscriptionService;
 
+    @Autowired
+    private IPieceJointeService pieceJointeService;
+
     @PostMapping("/inscription")
     @ResponseStatus(HttpStatus.OK)
-    public void inscrire(@Valid @RequestBody InscriptionDto inscriptionDto) {
-        this.inscriptionService.inscrire(inscriptionDto);
+    public void inscrire(
+        @Valid @RequestPart("inscription") InscriptionDto inscriptionDto,
+        @RequestParam("assurance") MultipartFile assurance,
+        @RequestParam("certificatMedical") MultipartFile certificatMedical
+    ) {
+        this.inscriptionService.inscrire(inscriptionDto, assurance, certificatMedical);
     }
 
     @GetMapping("/inscription/{saison}")
@@ -57,5 +68,25 @@ public class InscriptionController {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setContentDispositionFormData("attachment", "nom_de_votre_fichier.xlsx");
         return ResponseEntity.ok().headers(headers).body(inscriptionService.creerExcelSaison(saison));
+    }
+
+    @GetMapping("/inscription/download/piece-jointe/{id}")
+    @Operation(
+        summary = "Télécharge un fichier associé à un import à partir de son Id et son type",
+        tags = { "InscriptionController-manager" }
+    )
+    public ResponseEntity<byte[]> downloadFichier(@PathVariable(value = "id") Long idPieceJointe) {
+        PieceJointe fileImportByType = pieceJointeService.getPieceJointeById(idPieceJointe);
+        byte[] image = fileImportByType.getFichier().getImage();
+        MediaType mimeType = MediaType.valueOf(fileImportByType.getFormat());
+        HttpHeaders respHeaders = new HttpHeaders();
+        respHeaders.setContentLength(image.length);
+        respHeaders.setContentType(mimeType);
+        respHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        respHeaders.set(
+            HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=" + fileImportByType.getNom().concat(".").concat(mimeType.getSubtype())
+        );
+        return ResponseEntity.ok().headers(respHeaders).body(image);
     }
 }

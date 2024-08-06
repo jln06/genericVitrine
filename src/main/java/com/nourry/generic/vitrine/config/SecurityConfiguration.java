@@ -8,11 +8,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
@@ -86,17 +89,12 @@ public class SecurityConfiguration {
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/public/**").permitAll()
             .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
-//            .antMatchers("/api/admin/**").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/health/**").permitAll()
             .antMatchers("/management/info").permitAll()
             .antMatchers("/management/prometheus").permitAll()
-            //TODO secure
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-//            .antMatchers("/management/**").permitAll()
-            //TODO secure
-            //à enlever
             .antMatchers("/account/**").permitAll()
         .and()
             .httpBasic()
@@ -104,6 +102,11 @@ public class SecurityConfiguration {
             .apply(securityConfigurerAdapter());
         return http.build();
         // @formatter:on
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.httpFirewall(new DefaultHttpFirewall());
     }
 
     private JWTConfigurer securityConfigurerAdapter() {

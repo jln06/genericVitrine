@@ -1,21 +1,13 @@
 package com.nourry.generic.vitrine.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nourry.generic.vitrine.config.Constants;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.BatchSize;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -24,8 +16,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "inscription")
+@Setter
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "inscription")
+//@org.springframework.data.elasticsearch.annotations.Document(indexName = "inscription")
 public class Inscription extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,14 +40,17 @@ public class Inscription extends AbstractAuditingEntity<Long> implements Seriali
 
     @Getter
     @Email
-    @Size(min = 5, max = 254)
     @Column(length = 254)
     private String email;
 
     @Getter
-    @Size(min = 5, max = 15)
     @Column(length = 15)
     private String telephone;
+
+    @Getter
+    @Size(min = 5, max = 15)
+    @Column(name = "numero_urgence", length = 15)
+    private String numeroUrgence;
 
     @Getter
     private LocalDate dateNaissance;
@@ -69,40 +65,50 @@ public class Inscription extends AbstractAuditingEntity<Long> implements Seriali
     @JoinColumn(name = "saison_id")
     private Saison saison;
 
+    @Getter
+    @Size(max = 150)
+    private String adresse;
+
+    @Getter
+    @Size(min = 5, max = 5)
+    @NotNull
+    @Column(name = "codePostal", length = 5)
+    private String codePostal;
+
+    @Getter
+    @Size(max = 50)
+    @NotNull
+    private String ville;
+
+    @Getter
+    @Column(name = "port_lunette")
+    private Boolean portLunette;
+
+    @Getter
+    @Column(name = "allergie")
+    private Boolean allergie;
+
+    @Getter
+    @Column(name = "contact_urgence")
+    private Boolean contactUrgence;
+
+    @Getter
+    @NotNull
+    @Column(name = "mineur")
+    private Boolean mineur;
+
+    @Getter
+    @Size(max = 50)
+    @Column(name = "type_allergie")
+    private String typeAllergie;
+
+    @Getter
+    @Size(max = 50)
+    @Column(name = "sante_autre")
+    private String santeAutre;
+
     @Override
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setSaison(Saison saison) {
-        this.saison = saison;
-    }
-
-    public void setDateNaissance(LocalDate dateNaissance) {
-        this.dateNaissance = dateNaissance;
-    }
-
-    public void setPaye(Boolean paye) {
-        this.paye = paye;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
     }
 }

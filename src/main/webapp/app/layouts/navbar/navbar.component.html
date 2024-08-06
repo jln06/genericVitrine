@@ -1,4 +1,4 @@
-<header>
+<header #header id="header">
   <div id="menuMob" [class.opened]="isNavbarCollapsed" (click)="toggleNavbar()" class="visible-xs" #menuMob>
     <menu class="menu-button"></menu>
   </div>
@@ -10,33 +10,33 @@
   <nav [class.opened]="isNavbarCollapsed" #nav data-cy="navbar" class="container" [ngSwitch]="account !== null">
     <ul>
       <li class="nav-item noStyle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" (click)="scrollTo('ancre-pres')">
+        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" fragment="ancre-pres">
           <span>
             <span>Présentation</span>
           </span>
         </a>
       </li>
       <li class="nav-item noStyle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" (click)="scrollTo('inscription')">
+        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" fragment="inscription">
           <span>
             <span>Inscription</span>
           </span>
         </a>
       </li>
       <li class="nav-item noStyle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" (click)="scrollTo('galerie')">
+        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" fragment="galerie">
           <span>
             <span>Galerie</span>
           </span>
         </a>
       </li>
       <li class="nav-item noStyle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" (click)="scrollTo('goodies')">
+        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" fragment="goodies">
           <span> Goodies </span>
         </a>
       </li>
       <li class="nav-item noStyle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" (click)="scrollTo('contact')">
+        <a class="nav-link" jhiCloseMenu [htmlElement]="[nav, menuMob]" routerLink="/" fragment="contact">
           <span> Contact </span>
         </a>
       </li>
@@ -100,7 +100,7 @@
               [htmlElement]="[nav, menuMob]"
               routerLink="admin/inscription-list"
               routerLinkActive="active"
-              (click)="scrollTo()"
+              (click)="collapseAndScroll()"
             >
               <span>Gestion des inscriptions</span>
             </a>

@@ -24,6 +24,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { closeMenuDirective } from './directive/close-menu.directive';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -50,6 +51,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     GalerieUploadComponent,
     ConfirmDialogComponent,
     SpinnerComponent,
+    FileUploadComponent,
   ],
   exports: [
     SharedLibsModule,
@@ -72,6 +74,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     SafeHtmlPipe,
     closeMenuDirective,
     GalerieDisplayComponent,
+    SpinnerComponent,
+    FileUploadComponent,
   ],
 })
 export class SharedModule {}

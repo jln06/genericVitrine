@@ -1,0 +1,30 @@
+fieldset {
+  margin: 25px 0;
+  background-color: #eee;
+  padding: 15px;
+  border-radius: 5px;
+}
+legend {
+  border-bottom: 1px solid;
+  padding: 0 0 10px;
+  margin-bottom: 10px;
+}
+sup {
+  color: #f75e62;
+}
+.form-check-input:checked {
+  background-color: #20c997;
+  border-color: #20c997;
+}
+button.btn.btn-primary {
+  background-color: #00185c;
+  border-color: #00185c;
+}
+button.btn.btn-primary:active {
+  background-color: #00185c;
+  border-color: #00185c;
+}
+.loi {
+  font-weight: 600;
+  color: #f75e62;
+}

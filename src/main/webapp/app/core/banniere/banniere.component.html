@@ -1,4 +1,11 @@
 <div class="mainBanner">
-  <img *ngIf="banniere" [src]="banniere.url" alt="{{ banniere.file.name }}" class="mainImg" />
+  <splide #splide *ngIf="banniere" [options]="{ type: 'slide', perPage: 1, keyboard: false }">
+    <splide-slide *ngFor="let image of banniereList">
+      <div class="mainBanner">
+        <img [src]="banniere.url" alt="{{ banniere.file.name }}" class="mainImg" />
+        <h2 class="mainTitle"></h2>
+      </div>
+    </splide-slide>
+  </splide>
   <jhi-galerie-upload *ngIf="editMode$ | async" (fileHandleUploaded)="onFileUploaded($event)" [singleMode]="true"></jhi-galerie-upload>
 </div>

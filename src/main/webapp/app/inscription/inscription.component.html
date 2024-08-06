@@ -1,0 +1,51 @@
+<div class="container">
+  <form [formGroup]="inscriptionFormulaire" id="inscriptionFormulaireId" autocomplete="off" class="mt-3 mb-3">
+    <h1 class="h1">Adhésion au club French Riviera Skipping</h1>
+    <p>
+      <em>Tous les champs marqué d'un astérisque <sup>*</sup> sont obligatoires.</em>
+    </p>
+    <jhi-alert></jhi-alert>
+    <jhi-adherent [formAdherent]="adherentFormulaire"></jhi-adherent>
+    <fieldset id="infoParents" *ngIf="adherentFormulaire.get('mineur').value">
+      <legend>Autorité parentale</legend>
+      <jhi-parent
+        [formParent]="parent1Formulaire"
+        [required]="true"
+        [index]="1"
+        [mineur]="adherentFormulaire?.get('mineur').value"
+      ></jhi-parent>
+      <hr />
+      <jhi-parent
+        #parent2
+        [formParent]="parent2Formulaire"
+        [required]="false"
+        [index]="2"
+        [mineur]="adherentFormulaire?.get('mineur').value"
+      ></jhi-parent>
+    </fieldset>
+    <fieldset>
+      <legend>Documents à fournir</legend>
+      <div class="row g-3">
+        <div class="col-md-6 mb-3">
+          <jhi-file-upload
+            [afficherErreur]="(submitted$ | async) && pieceJointeAssurance == null"
+            [type]="PieceJointeType.ASSURANCE"
+            (file)="uploadFile($event)"
+          ></jhi-file-upload>
+        </div>
+        <div class="col-md-6 mb-3">
+          <jhi-file-upload
+            [afficherErreur]="(submitted$ | async) && pieceJointeCertificatMedical == null"
+            [type]="PieceJointeType.CERTIFICAT_MEDICAL"
+            (file)="uploadFile($event)"
+          ></jhi-file-upload>
+        </div>
+      </div>
+    </fieldset>
+    <p class="loi">En validant le formulaire je certifie l'exactitude des renseignements fournis.</p>
+
+    <menu class="col-12">
+      <button type="submit" (click)="submit()" class="btn btn-primary">Valider</button>
+    </menu>
+  </form>
+</div>

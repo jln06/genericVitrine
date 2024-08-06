@@ -134,4 +134,4 @@ jhipster:
 # application:
 
 file:
-  upload-dir: resources
+  upload-dir: /usr/frenchrivieraskipping/resources

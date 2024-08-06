@@ -42,9 +42,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/genericvitrine;DB_CLOSE_DELAY=-1;MODE=LEGACY
-    username: genericVitrine
-    password:
+    url: jdbc:postgresql://localhost:5433/frs
+    username: frs
+    password: frs06140
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -53,16 +53,23 @@ spring:
       # disable spring boot built-in h2-console since we start it manually with correct configuration
       enabled: false
   jpa:
-  elasticsearch:
-    uris: http://localhost:9200
+    database-platform: tech.jhipster.domain.util.FixedPostgreSQL10Dialect
+
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: smtp.ionos.fr
+    port: 465
+    username: contact@frenchrivieraskipping.fr
+    password: frv@06140
+
+    properties:
+      'mail.smtp.ssl.enable': true
+      'mail.transport.protocol': smtp
+      'mail.smtp.auth': true
+      'mail.smtp.starttls.enable': true
+
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:

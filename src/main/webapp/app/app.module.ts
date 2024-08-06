@@ -27,6 +27,7 @@ import { ErrorComponent } from './layouts/error/error.component';
 import { NgbDateCustomParserFormatter } from './config/dateParsepicker-adapter';
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InscriptionModule } from './inscription/inscription.module';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     BrowserAnimationsModule,
     HomeModule,
+    InscriptionModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)

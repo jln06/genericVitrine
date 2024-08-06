@@ -1,44 +1,57 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { InscriptionService } from '../../shared/service/inscription.service';
 import { Saison } from '../../entities/model/saison.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Inscription } from '../../entities/model/inscription.model';
 import { ColumnMode } from '@swimlane/ngx-datatable';
-import { formatDateToyyyyMMdd } from '../../core/util/dateUtils';
+import { formatDateToyyyyMMdd } from '../../shared/util/dateUtils';
+import { PieceJointeType } from '../../enums/pieceJointeType';
+import * as fileSaver from 'file-saver';
+import { tap } from 'rxjs/operators';
+import { FileService } from '../../home/service/file.service';
+import { DataUtils } from '../../shared/util/data-util.service';
 
 @Component({
   selector: 'jhi-inscription-list',
   templateUrl: './inscription-list.component.html',
   styleUrls: ['./inscription-list.component.scss'],
 })
-export class InscriptionListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InscriptionListComponent implements OnInit {
+  @ViewChild('myTable') table: any;
+  expanded: any = {};
+
   saisonSelected: string;
   saisonList: Saison[];
-  inscriptions$: Observable<Inscription[]>;
+  inscriptionObservable: Observable<Inscription[]>;
+  inscriptions: BehaviorSubject<Inscription[]> = new BehaviorSubject<Inscription[]>([]);
   showTable: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   inscription: Inscription[];
   ColumnMode = ColumnMode;
 
   rows: any = [];
 
-  constructor(private inscriptionService: InscriptionService, private readonly chRef: ChangeDetectorRef) {}
-
-  ngOnDestroy(): void {}
-
-  ngAfterViewInit(): void {}
+  constructor(
+    private inscriptionService: InscriptionService,
+    private readonly chRef: ChangeDetectorRef,
+    private fileService: FileService,
+    private dataUtils: DataUtils
+  ) {}
 
   ngOnInit(): void {
-    this.inscriptions$ = this.inscriptionService.inscriptionsSuject$;
     this.inscriptionService.getSaisons().subscribe(data => {
-      if (data && data.length > 0) {
+      if (data.length > 0) {
         this.saisonList = data;
         this.saisonSelected = data.filter(s => s.active).map(s => s.annees)[0];
-        this.inscriptionService.searchInscriptions(this.saisonSelected);
-        this.inscriptions$.subscribe(data => this.showTable.next(!!data));
+        this.inscriptionObservable = this.inscriptionService.searchInscriptions(this.saisonSelected).pipe(
+          tap(inscriptions => this.inscriptions.next(inscriptions)),
+          tap(inscriptions => this.showTable.next(!!inscriptions))
+        );
+        this.inscriptionObservable.subscribe();
       }
     });
   }
-  downloadExcel() {
+
+  downloadExcel(): void {
     this.inscriptionService.downloadExcel(this.saisonSelected).subscribe((blob: Blob) => {
       const blobUrl = window.URL.createObjectURL(blob);
       const anchor = document.createElement('a');
@@ -52,15 +65,51 @@ export class InscriptionListComponent implements OnInit, AfterViewInit, OnDestro
     });
   }
 
-  onSelectChange($event: any) {
-    this.inscriptionService.searchInscriptions($event);
+  onSelectChange($event: any): void {
+    this.inscriptionObservable.subscribe();
   }
 
-  onChangePaye(number: number) {
-    this.inscriptionService.payeInscription(number).subscribe(() => this.inscriptionService.searchInscriptions(this.saisonSelected));
+  onChangePaye(number: number): void {
+    this.inscriptionService.payeInscription(number).subscribe(() => this.inscriptionObservable.subscribe());
   }
 
-  onSort($event: any) {
-    console.log($event);
+  downloadFile(idPieceJointe: number): void {
+    this.inscriptionService.telechargerFichier(idPieceJointe).subscribe(response => {
+      const filename = this.getFilenameFromContentDisposition(response);
+      const blob = new Blob([response.body], { type: response.body.type });
+      fileSaver.saveAs(blob, filename);
+    });
   }
+
+  openFile(idPieceJointe: number): void {
+    this.inscriptionService.telechargerFichier(idPieceJointe).subscribe(response => {
+      const filename = this.getFilenameFromContentDisposition(response);
+      const blob = new Blob([response.body], { type: response.body.type });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    });
+  }
+
+  private getFilenameFromContentDisposition(response: any): string {
+    const contentDisposition = response.headers.get('Content-Disposition');
+    if (!contentDisposition) {
+      return 'unknown';
+    }
+    const [, filename] = contentDisposition.split('filename=');
+    return filename ? filename.replace(/['"]/g, '') : 'unknown';
+  }
+
+  toggleExpandRow(row): void {
+    this.table.rowDetail.toggleExpandRow(row);
+  }
+
+  onDetailToggle(event): void {
+    console.log('Detail Toggled', event);
+  }
+
+  getRowClass(row: any): string {
+    return row.paye ? 'paid-row' : ''; // Apply 'paid-row' class if row.paye is truthy
+  }
+
+  protected readonly PieceJointeType = PieceJointeType;
 }

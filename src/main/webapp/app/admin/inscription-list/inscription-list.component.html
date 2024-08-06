@@ -2,23 +2,67 @@
 <div class="container">
   <div *ngIf="!saisonList">Aucune inscription</div>
   <div *ngIf="saisonList">
-    <div class="col-3">
-      <select class="form-control" name="saisonList" [(ngModel)]="saisonSelected" (ngModelChange)="onSelectChange($event)">
-        <option *ngFor="let saison of saisonList" [value]="saison.annees">{{ saison.annees }} {{ saison.active ? '(active)' : '' }}</option>
-      </select>
+    <div class="row mt-4 mb-3">
+      <div class="col-12 col-md-3">
+        <select class="form-control" name="saisonList" [(ngModel)]="saisonSelected" (ngModelChange)="onSelectChange($event)">
+          <option *ngFor="let saison of saisonList" [value]="saison.annees">
+            {{ saison.annees }} {{ saison.active ? '(active)' : '' }}
+          </option>
+        </select>
+      </div>
+      <div class="col-12 col-md-2 offset-md-7">
+        <button class="btn btn-primary" (click)="downloadExcel()">Export to Excel</button>
+      </div>
     </div>
     <div *ngIf="showTable | async">
       <ngx-datatable
-        class="bootstrap"
+        class="material expandable"
+        #myTable
         [columnMode]="ColumnMode.force"
         [footerHeight]="50"
         [rowHeight]="50"
         [headerHeight]="50"
-        [rows]="inscriptions$ | async"
+        [rowClass]=""
+        [rows]="inscriptions | async"
         [scrollbarH]="true"
+        [rowClass]="getRowClass"
         [messages]="{ emptyMessage: 'Aucune inscription pour cette saison' }"
-        [limit]="25"
+        [limit]="10"
       >
+        >
+
+        <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow (toggle)="onDetailToggle($event)">
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+            <div style="padding-left: 60px; font-size: 14px">
+              <div>
+                <strong>Addresse : </strong><span>{{ row?.adresse }}, {{ row.codePostal }} - {{ row.ville }}</span>
+              </div>
+              <div>
+                <strong>Email : </strong><span>{{ row?.mineur ? row?.parent1?.email : row?.email }}</span>
+              </div>
+              <div>
+                <strong>Téléphone : </strong><span>{{ row?.mineur ? row?.parent1?.telephone : row?.telephone }}</span>
+              </div>
+              <div>
+                <strong>Date pré-inscription : </strong><span>{{ row?.dateCreation | date: 'dd/MM/yyyy hh:mm' }}</span>
+              </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-row-detail>
+
+        <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <a
+              href="javascript:void(0)"
+              [class.datatable-icon-right]="!expanded"
+              [class.datatable-icon-down]="expanded"
+              title="Expand/Collapse Row"
+              (click)="toggleExpandRow(row)"
+            >
+            </a>
+          </ng-template>
+        </ngx-datatable-column>
+
         <ngx-datatable-column name="Nom" prop="nom" [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.nom }}
@@ -34,23 +78,43 @@
             {{ row?.dateNaissance }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Email" [sortable]="false">
+        <ngx-datatable-column name="Ville" [sortable]="true">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.email }}
+            {{ row?.ville }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Téléphone" [sortable]="false">
+        <ngx-datatable-column name="Assurance" [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.telephone }}
+            <div class="center-content">
+              <a *ngIf="row.idAssurance" (click)="openFile(row.idAssurance)">
+                <fa-icon icon="eye"></fa-icon>
+              </a>
+              <a *ngIf="row.idAssurance" (click)="downloadFile(row.idAssurance)">
+                <i class="fa-solid fa-download"></i>
+              </a>
+            </div>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Inscription" [sortable]="false">
+        <ngx-datatable-column name="Certificat médical" [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <input type="checkbox" [checked]="row?.paye" (change)="onChangePaye(row.id)" />
+            <div class="center-content">
+              <a *ngIf="row.idCertificatMedical" (click)="openFile(row.idCertificatMedical)">
+                <fa-icon icon="eye"></fa-icon>
+              </a>
+              <a *ngIf="row.idCertificatMedical" (click)="downloadFile(row.idCertificatMedical)">
+                <i class="fa-solid fa-download"></i>
+              </a>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Cotisation" prop="paye" [sortable]="true">
+          <ng-template let-row="row" ngx-datatable-cell-template class="align-content-center">
+            <div class="center-content">
+              <input type="checkbox" [checked]="row?.paye" (change)="onChangePaye(row.id)" />
+            </div>
           </ng-template>
         </ngx-datatable-column>
       </ngx-datatable>
     </div>
-    <button (click)="downloadExcel()">Export to Excel</button>
   </div>
 </div>

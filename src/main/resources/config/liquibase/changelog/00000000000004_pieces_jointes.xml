@@ -1,0 +1,70 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <changeSet id="00000000000008" author="jnourry">
+        <createTable tableName="type_piece_jointe">
+            <column name="code" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="libelle" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="blob">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="image" type="bytea">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="piece_jointe">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_inscription" type="BIGINT"/>
+            <column name="id_fichier" type="BIGINT"/>
+            <column name="nom" type="varchar(200)"/>
+            <column name="taille" type="varchar(200)"/>
+            <column name="format" type="varchar(200)"/>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+
+        <addForeignKeyConstraint baseColumnNames="type"
+                                 baseTableName="piece_jointe"
+                                 constraintName="fk_piece_jointe_type"
+                                 referencedColumnNames="code"
+                                 referencedTableName="type_piece_jointe"/>
+
+        <addForeignKeyConstraint baseTableName="piece_jointe"
+                                 baseColumnNames="id_fichier"
+                                 constraintName="fk_piece_jointe_fichier"
+                                 referencedTableName="blob"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="piece_jointe"
+                                 baseColumnNames="id_inscription"
+                                 constraintName="fk_piece_jointe_inscription"
+                                 referencedTableName="inscription"
+                                 referencedColumnNames="id"/>
+
+        <loadData
+            file="config/liquibase/data/type_piece_jointe.csv"
+            separator=";"
+            tableName="type_piece_jointe"
+            usePreparedStatements="true">
+        </loadData>
+    </changeSet>
+
+
+</databaseChangeLog>

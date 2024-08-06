@@ -12,8 +12,9 @@ public interface IMailService {
     @Async
     void sendEmailFromTemplate(User user, String templateName, String titleKey);
 
-    @Async
-    void sendContactEmail(ContactDto contactDto, String templateName, String titleKey);
+    void sendInscriptionMail(ContactDto contactDto);
+
+    void sendInscriptionAlertMail(ContactDto contactDto);
 
     @Async
     void sendContactMail(ContactDto contactDto);

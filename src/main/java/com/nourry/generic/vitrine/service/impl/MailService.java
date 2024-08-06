@@ -106,7 +106,22 @@ public class MailService implements IMailService {
 
     @Override
     @Async
-    public void sendContactEmail(ContactDto contactDto, String templateName, String titleKey) {
+    public void sendInscriptionMail(ContactDto contactDto) {
+        log.debug("Sending préInscription email to '{}'", this.mailUsername);
+        contactDto.setEmail(jHipsterProperties.getMail().getFrom());
+        sendContactEmail(contactDto, "mail/inscriptionEmail", "email.preinscription.title");
+    }
+
+    @Override
+    @Async
+    public void sendInscriptionAlertMail(ContactDto contactDto) {
+        log.debug("Sending préInscription email to '{}'", this.mailUsername);
+        contactDto.setTo(this.mailUsername);
+        contactDto.setEmail(jHipsterProperties.getMail().getFrom());
+        sendContactEmail(contactDto, "mail/inscriptionAlertEmail", "email.preinscription.alert.title");
+    }
+
+    private void sendContactEmail(ContactDto contactDto, String templateName, String titleKey) {
         if (contactDto.getEmail() == null) {
             log.debug("Impossible d'envoyer l'email car non renseigné");
             return;
@@ -114,7 +129,7 @@ public class MailService implements IMailService {
         Context context = initContextForContact(contactDto);
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, context.getLocale());
-        sendEmail(this.mailUsername, Optional.of(contactDto.getEmail()), subject, content, false, true);
+        sendEmail(contactDto.getTo(), Optional.of(contactDto.getEmail()), subject, content, false, true);
     }
 
     private Context initContextForContact(ContactDto contactDto) {
@@ -139,6 +154,7 @@ public class MailService implements IMailService {
     @Async
     public void sendContactMail(ContactDto contactDto) {
         log.debug("Sending activation email to '{}'", contactDto.getEmail());
+        contactDto.setTo(this.mailUsername);
         sendContactEmail(contactDto, "mail/contactEmail", "contact.title");
     }
 

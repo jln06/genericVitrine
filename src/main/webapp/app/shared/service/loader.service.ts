@@ -17,4 +17,12 @@ export class LoaderService {
   getLoading() {
     return this.loadingSubject.value;
   }
+
+  show() {
+    this.setLoading(true);
+  }
+
+  hide() {
+    this.setLoading(false);
+  }
 }

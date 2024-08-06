@@ -67,15 +67,14 @@ public class PublicUserResource {
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
-
     /**
      * {@code SEARCH /_search/users/:query} : search for the User corresponding to the query.
      *
      * @param query the query to search.
      * @return the result of the search.
      */
-    @GetMapping("/_search/users/{query}")
-    public List<UserDTO> search(@PathVariable String query) {
-        return StreamSupport.stream(userSearchRepository.search(query).spliterator(), false).map(UserDTO::new).collect(Collectors.toList());
-    }
+    //    @GetMapping("/_search/users/{query}")
+    //    public List<UserDTO> search(@PathVariable String query) {
+    //        return StreamSupport.stream(userSearchRepository.search(query).spliterator(), false).map(UserDTO::new).collect(Collectors.toList());
+    //    }
 }

@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { EventManager } from 'app/core/util/event-manager.service';
-import { Alert, AlertService } from 'app/core/util/alert.service';
+import { EventManager } from 'app/shared/util/event-manager.service';
+import { Alert, AlertService } from 'app/shared/util/alert.service';
 
 import { AlertErrorComponent } from './alert-error.component';
 

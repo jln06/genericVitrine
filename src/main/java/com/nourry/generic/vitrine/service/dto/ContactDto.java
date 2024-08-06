@@ -21,8 +21,9 @@ public class ContactDto {
     @Pattern(regexp = "^[0-9]{10,14}$", message = "Le numéro de téléphone doit contenir de 10 à 14 chiffres.")
     private String telephone;
 
-    @Size(min = 1, max = 800)
     private String message;
+
+    private String to;
 
     public ContactDto() {}
 }

@@ -1,0 +1,4 @@
+export enum PieceJointeType {
+  CERTIFICAT_MEDICAL = 'CERTIFICAT_MEDICAL',
+  ASSURANCE = 'ASSURANCE',
+}

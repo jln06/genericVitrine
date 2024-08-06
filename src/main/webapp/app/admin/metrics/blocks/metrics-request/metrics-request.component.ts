@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { HttpServerRequests } from 'app/admin/metrics/metrics.model';
-import { filterNaN } from 'app/core/util/operators';
+import { filterNaN } from 'app/shared/util/operators';
 
 @Component({
   selector: 'jhi-metrics-request',

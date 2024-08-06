@@ -1,7 +1,9 @@
+var headerHeight = $('header').outerHeight();
+
 $(window).on('scroll', function () {
   var window_scrollY = typeof window.scrollY === 'undefined' ? window.pageYOffset : window.scrollY;
 
-  if (window_scrollY > 0) {
+  if (window_scrollY > headerHeight) {
     $('header').addClass('is-sticky');
   } else {
     $('header').removeClass('is-sticky');

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { isPresent } from 'app/core/util/operators';
+import { isPresent } from 'app/shared/util/operators';
 import { Pagination } from 'app/core/request/request.model';
 import { IUser, getUserIdentifier } from './user.model';
 

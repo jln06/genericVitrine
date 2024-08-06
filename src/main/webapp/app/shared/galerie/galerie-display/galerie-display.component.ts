@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FileHandle } from '../../../entities/model/file-handle.model';
 import Splide from '@splidejs/splide';
-import { FileService } from '../../../core/service/file.service';
+import { FileService } from '../../../home/service/file.service';
 import { FileDto } from '../../../entities/model/fileDto.model';
 import { NgbCarousel, NgbCarouselConfig, NgbModal, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
-import { EditModeService } from '../../../core/service/edit-mode.service';
+import { EditModeService } from '../../../home/service/edit-mode.service';
 import { Observable } from 'rxjs';
 import { ConfirmDialogComponent } from 'app/shared/confirm-dialog/confirm-dialog.component';
-import { scrollTo } from '../../../core/util/viewUtil';
+import { scrollTo } from '../../util/viewUtil';
 
 declare const $: any;
 

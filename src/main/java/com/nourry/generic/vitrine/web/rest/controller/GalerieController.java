@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -75,5 +77,15 @@ public class GalerieController {
     @ResponseStatus(HttpStatus.OK)
     public void getFileDescription(@PathVariable(value = "ids") List<Long> ids) {
         fileStorageService.deleteFilesById(ids);
+    }
+
+    @GetMapping("/galerie/pageable")
+    public ResponseEntity<Page<FileDto>> getFilePageable(
+        @RequestParam(value = "page", defaultValue = "0") int page,
+        @RequestParam(value = "size", defaultValue = "5") int size,
+        @RequestParam(value = "codeImage") ImageCategorieEnum imageCategorieEnum
+    ) {
+        Page<FileDto> resources = fileStorageService.loadFileAsResourcePageable(imageCategorieEnum, Pageable.ofSize(size).withPage(page));
+        return ResponseEntity.ok(resources);
     }
 }
