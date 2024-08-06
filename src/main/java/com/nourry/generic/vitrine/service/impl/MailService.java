@@ -109,7 +109,7 @@ public class MailService implements IMailService {
     public void sendInscriptionMail(ContactDto contactDto) {
         log.debug("Sending préInscription email to '{}'", this.mailUsername);
         contactDto.setEmail(jHipsterProperties.getMail().getFrom());
-        sendContactEmail(contactDto, "mail/inscriptionEmail", "email.preinscription.title");
+        sendContactEmail(contactDto, "mail/inscriptionEmail", "email.inscription.title");
     }
 
     @Override
@@ -118,7 +118,7 @@ public class MailService implements IMailService {
         log.debug("Sending préInscription email to '{}'", this.mailUsername);
         contactDto.setTo(this.mailUsername);
         contactDto.setEmail(jHipsterProperties.getMail().getFrom());
-        sendContactEmail(contactDto, "mail/inscriptionAlertEmail", "email.preinscription.alert.title");
+        sendContactEmail(contactDto, "mail/inscriptionAlertEmail", "email.inscription.alert.title");
     }
 
     private void sendContactEmail(ContactDto contactDto, String templateName, String titleKey) {
